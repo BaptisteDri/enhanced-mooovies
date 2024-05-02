@@ -1,0 +1,70 @@
+import { twMerge } from "tailwind-merge"
+import { cva, type VariantProps } from "class-variance-authority"
+
+type PolymorphicProps<Element extends React.ElementType, Props> = Props &
+	Omit<React.ComponentProps<Element>, "as"> & {
+		as?: Element
+	}
+
+const button = cva(
+	[
+		"whitespace-nowrap",
+		"leading-none",
+		"flex",
+		"items-center",
+		"justify-center",
+		"focus:outline-none",
+		"focus-visible:ring-4",
+		"transition-all",
+		"disabled:cursor-not-allowed",
+		"font-medium",
+	],
+	{
+		variants: {
+			intent: {
+				primary: [
+					"bg-indigo-600",
+					"text-slate-50",
+					"hover:bg-indigo-500",
+					"active:bg-indigo-700",
+					"focus-visible:bg-indigo-700",
+					"disabled:bg-indigo-200",
+					"ring-indigo-400",
+				],
+			},
+			size: {
+				base: ["py-4", "px-7", "rounded-md"],
+			},
+		},
+
+		defaultVariants: {
+			intent: "primary",
+			size: "base",
+		},
+	},
+)
+
+type Props = VariantProps<typeof button>
+
+const defaultElement = "button"
+
+export const Button = <
+	Element extends React.ElementType = typeof defaultElement,
+>(
+	props: PolymorphicProps<Element, Props>,
+) => {
+	const {
+		as: Component = defaultElement,
+		className,
+		intent,
+		size,
+		btnType,
+		...rest
+	} = props
+	return (
+		<Component
+			className={twMerge(button({ className, intent, size }))}
+			{...rest}
+		/>
+	)
+}

@@ -1,28 +1,31 @@
 import { login } from "@/app/login/actions"
+import { Button } from "@/design-system/button"
+import { Input } from "@/design-system/input"
 
 export const LoginForm = () => {
 	return (
-		<div className="space-y-6 sm:space-y-8 max-md:w-full lg:w-[30rem]">
+		<div className="space-y-6 sm:space-y-8">
 			<form className="space-y-6 sm:space-y-8">
-				<div className="space-y-6">
-					<input
+				<div className="space-y-4">
+					<Input
 						name="email"
-						placeholder="Email Address"
+						placeholder="Email"
 						required
 						type="email"
 					/>
-					<input
+					<Input
 						className="w-full"
 						name="password"
-						placeholder="Password"
+						placeholder="Mot de passe"
 						required
 						type="password"
 						minLength={6}
 					/>
+					{/* @TODO: checkbox pour accepter les CGU / Privacy */}
 				</div>
-				<button type="submit" className="w-full" formAction={login}>
-					Login
-				</button>
+				<Button type="submit" className="w-full" formAction={login}>
+					Se connecter
+				</Button>
 			</form>
 		</div>
 	)
