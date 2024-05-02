@@ -10,10 +10,10 @@ const config: Config = {
 	theme: {
 		extend: {
 			animation: {
-				marquee: "marquee 35s linear infinite",
-				marquee2: "marquee2 35s linear infinite",
-				"reverse-marquee": "reverseMarquee 35s linear infinite",
-				"reverse-marquee2": "reverseMarquee2 35s linear infinite",
+				marquee: "marquee 50s linear infinite",
+				marquee2: "marquee2 50s linear infinite",
+				"reverse-marquee": "reverseMarquee 50s linear infinite",
+				"reverse-marquee2": "reverseMarquee2 50s linear infinite",
 			},
 			keyframes: {
 				marquee: {

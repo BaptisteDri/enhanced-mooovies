@@ -1,6 +1,19 @@
+"use client"
+
 import { login } from "@/app/login/actions"
 import { Button } from "@/design-system/button"
 import { Input } from "@/design-system/input"
+import { Spinner } from "@/design-system/spinner"
+import { useFormStatus } from "react-dom"
+
+const Submit = () => {
+	const { pending } = useFormStatus()
+	return (
+		<Button type="submit" className="w-full" formAction={login}>
+			{pending ? <Spinner /> : "Se connecter"}
+		</Button>
+	)
+}
 
 export const LoginForm = () => {
 	return (
@@ -23,9 +36,7 @@ export const LoginForm = () => {
 					/>
 					{/* @TODO: checkbox pour accepter les CGU / Privacy */}
 				</div>
-				<Button type="submit" className="w-full" formAction={login}>
-					Se connecter
-				</Button>
+				<Submit />
 			</form>
 		</div>
 	)
