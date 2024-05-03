@@ -21,26 +21,28 @@ const Submit = () => {
 
 export const LoginForm = () => {
 	return (
-		<div className="space-y-6 sm:space-y-8">
-			<form className="space-y-6 sm:space-y-8">
-				<div className="space-y-4">
-					<Input
-						name="email"
-						placeholder="Email"
-						required
-						type="email"
-					/>
-					<Input
-						className="w-full"
-						name="password"
-						placeholder="Mot de passe"
-						required
-						type="password"
-						minLength={6}
-					/>
-				</div>
-				<Submit />
-			</form>
-		</div>
+		<form className="space-y-6 sm:space-y-8">
+			<div className="space-y-4">
+				<Input
+					name="email"
+					placeholder="Email"
+					required
+					type="email"
+					icon="envelope"
+					iconPosition={"left"}
+				/>
+				<Input
+					className="w-full"
+					name="password"
+					placeholder="Mot de passe"
+					required
+					type="password"
+					minLength={6}
+					icon="lock-closed"
+					iconPosition={"left"}
+				/>
+			</div>
+			<Submit />
+		</form>
 	)
 }

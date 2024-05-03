@@ -23,19 +23,23 @@ const Submit = () => {
 export const SignupForm = () => {
 	return (
 		<form className="space-y-6 sm:space-y-8">
-			<div className="space-y-6">
+			<div className="space-y-4">
 				<Input
 					name="email"
-					placeholder="Email Address"
+					placeholder="Email"
 					required
 					type="email"
+					icon="envelope"
+					iconPosition={"left"}
 				/>
 				<Input
 					name="password"
-					placeholder="Password"
+					placeholder="Mot de passe"
 					required
 					type="password"
 					minLength={6}
+					icon="lock-closed"
+					iconPosition={"left"}
 				/>
 				<div className="flex items-center space-x-2">
 					<input type="checkbox" id="acceptCguPrivacy" required />
@@ -61,6 +65,7 @@ export const SignupForm = () => {
 					</label>
 				</div>
 			</div>
+
 			<Submit />
 		</form>
 	)
