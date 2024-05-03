@@ -3,7 +3,11 @@ import { LoginForm } from "@/ui/login/login-form"
 import Link from "next/link"
 import { twMerge } from "tailwind-merge"
 
-export const LoginLayout = () => {
+type Props = {
+	type: "login" | "signup"
+}
+
+export const AuthLayout = ({ type }: Props) => {
 	return (
 		<main className="min-h-dvh flex">
 			<div

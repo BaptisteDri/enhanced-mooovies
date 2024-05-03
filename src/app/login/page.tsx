@@ -1,5 +1,5 @@
 import { createClient } from "@/libs/supabase/server"
-import { LoginLayout } from "@/ui/login/login-layout"
+import { AuthLayout } from "@/ui/shared/auth/auth-layout"
 import { NextPage } from "next"
 import { redirect } from "next/navigation"
 
@@ -9,7 +9,7 @@ const Login: NextPage = async () => {
 
 	if (data.user) redirect("/")
 
-	return <LoginLayout />
+	return <AuthLayout type="login" />
 }
 
 export default Login
