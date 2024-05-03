@@ -1,5 +1,6 @@
 import { createClient } from "@/libs/supabase/server"
 import { Metadata, NextPage } from "next"
+import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
 	title: "Mooovies - Découvez les derniers films que vos amis ont vu !",
@@ -11,7 +12,13 @@ const Home: NextPage = async () => {
 	const supabase = createClient()
 	const { data } = await supabase.auth.getUser()
 
-	return <main>{data.user ? data.user?.email : "Not logged in"}</main>
+	if (!data.user) redirect("/login")
+
+	return (
+		<main>
+			<div>{data.user.email}</div>
+		</main>
+	)
 }
 
 export default Home

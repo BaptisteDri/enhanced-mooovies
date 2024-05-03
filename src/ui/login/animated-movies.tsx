@@ -16,7 +16,7 @@ export const AnimatedMovies = async () => {
 
 	return (
 		<div className="overflow-hidden p-4 relative h-full bg-slate-900">
-			<div className="rotate-6 scale-125 -translate-y-10 space-y-4">
+			<div className="rotate-6 scale-150 md:scale-[200%] lg:scale-150 xl:scale-125 translate-y-32 xl:-translate-y-10 space-y-4">
 				<Marquee moviesPosters={parsedMovies.slice(0, 4)} />
 				<Marquee moviesPosters={parsedMovies.slice(4, 8)} reverse />
 				<Marquee moviesPosters={parsedMovies.slice(8, 12)} />
