@@ -15,8 +15,8 @@ export const SignoutButton = () => {
 	}
 
 	return (
-		<Button onClick={onSignout}>
-			{pending ? <Spinner /> : "Se déconnecter"}
+		<Button onClick={onSignout} loading={pending}>
+			Se déconnecter
 		</Button>
 	)
 }

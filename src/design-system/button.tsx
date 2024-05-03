@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge"
 import { cva, type VariantProps } from "class-variance-authority"
+import { Spinner } from "@/design-system/spinner"
 
 type PolymorphicProps<Element extends React.ElementType, Props> = Props &
 	Omit<React.ComponentProps<Element>, "as"> & {
@@ -18,6 +19,7 @@ const button = cva(
 		"transition-all",
 		"disabled:cursor-not-allowed",
 		"font-medium",
+		"relative",
 	],
 	{
 		variants: {
@@ -44,7 +46,9 @@ const button = cva(
 	},
 )
 
-type Props = VariantProps<typeof button>
+type Props = VariantProps<typeof button> & {
+	loading?: boolean
+}
 
 const defaultElement = "button"
 
@@ -59,12 +63,24 @@ export const Button = <
 		intent,
 		size,
 		btnType,
+		children,
+		loading,
 		...rest
 	} = props
 	return (
 		<Component
 			className={twMerge(button({ className, intent, size }))}
 			{...rest}
-		/>
+		>
+			{loading && <Spinner className="absolute" />}
+			<span
+				className={twMerge(
+					"transition-opacity duration-150",
+					loading && "opacity-0",
+				)}
+			>
+				{children}
+			</span>
+		</Component>
 	)
 }

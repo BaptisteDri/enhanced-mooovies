@@ -1,5 +1,11 @@
-export const Spinner = () => (
-	<div role="status">
+import { twMerge } from "tailwind-merge"
+
+type Props = {
+	className?: string
+}
+
+export const Spinner = ({ className }: Props) => (
+	<div role="status" className={twMerge(className)}>
 		<svg
 			aria-hidden="true"
 			className="w-4 h-4 text-slate-200 animate-spin fill-indigo-600"
