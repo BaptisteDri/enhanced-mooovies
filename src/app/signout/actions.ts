@@ -12,6 +12,6 @@ export async function signout() {
 
 	if (error) return error
 
-	revalidatePath("/login", "layout")
-	redirect("/login")
+	revalidatePath("/connexion", "layout")
+	redirect("/connexion")
 }

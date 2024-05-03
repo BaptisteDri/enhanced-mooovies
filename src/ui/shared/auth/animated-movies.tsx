@@ -1,4 +1,4 @@
-import { Marquee } from "@/ui/login/marquee"
+import { Marquee } from "@/ui/shared/auth/marquee"
 
 export const AnimatedMovies = async () => {
 	const staticData: any = await fetch(

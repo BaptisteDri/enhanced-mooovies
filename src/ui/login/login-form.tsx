@@ -38,7 +38,6 @@ export const LoginForm = () => {
 						type="password"
 						minLength={6}
 					/>
-					{/* @TODO: checkbox pour accepter les CGU / Privacy */}
 				</div>
 				<Submit />
 			</form>

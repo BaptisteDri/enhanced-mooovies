@@ -1,7 +1,8 @@
-import { AnimatedMovies } from "@/ui/login/animated-movies"
+import { AnimatedMovies } from "@/ui/shared/auth/animated-movies"
 import { LoginForm } from "@/ui/login/login-form"
 import Link from "next/link"
 import { twMerge } from "tailwind-merge"
+import { SignupForm } from "@/ui/signup/signup-form"
 
 type Props = {
 	type: "login" | "signup"
@@ -28,14 +29,20 @@ export const AuthLayout = ({ type }: Props) => {
 						</p>
 					</div>
 					<div>
-						<LoginForm />
+						{type === "login" ? <LoginForm /> : <SignupForm />}
 						<Link
-							href="/register"
+							href={
+								type === "login" ? "/inscription" : "/connexion"
+							}
 							className="mt-4 flex gap-2 text-slate-400 text-sm hover:opacity-80 transition-all duration-150 justify-center"
 						>
-							Pas encore de compte ?
-							<span className="underline text-indigo-600">
-								S'inscrire
+							{type === "login"
+								? "Pas de compte ?"
+								: "Déjà inscrit ?"}
+							<span className="text-indigo-600">
+								{type === "login"
+									? "S'inscrire"
+									: "Se connecter"}
 							</span>
 						</Link>
 					</div>

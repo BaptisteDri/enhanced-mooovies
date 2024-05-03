@@ -13,7 +13,7 @@ const Home: NextPage = async () => {
 	const supabase = createClient()
 	const { data } = await supabase.auth.getUser()
 
-	if (!data.user) redirect("/login")
+	if (!data.user) redirect("/connexion")
 
 	return (
 		<main>
