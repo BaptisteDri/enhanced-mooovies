@@ -1,15 +1,12 @@
 import { AnimatedMovies } from "@/ui/shared/auth/animated-movies"
-import { LoginForm } from "@/ui/login/login-form"
-import Link from "next/link"
 import { twMerge } from "tailwind-merge"
-import { SignupForm } from "@/ui/signup/signup-form"
 import Image from "next/image"
 
 type Props = {
-	type: "login" | "signup"
+	children: React.ReactNode
 }
 
-export const AuthLayout = ({ type }: Props) => {
+export const AuthLayout = ({ children }: Props) => {
 	return (
 		<main className="min-h-dvh flex">
 			<div
@@ -36,24 +33,7 @@ export const AuthLayout = ({ type }: Props) => {
 							ceux que vous souhaitez voir.
 						</p>
 					</div>
-					<div>
-						{type === "login" ? <LoginForm /> : <SignupForm />}
-						<Link
-							href={
-								type === "login" ? "/inscription" : "/connexion"
-							}
-							className="mt-4 flex gap-2 text-gray-400 text-sm hover:opacity-80 transition-all duration-150 justify-center"
-						>
-							{type === "login"
-								? "Pas de compte ?"
-								: "Déjà inscrit ?"}
-							<span className="text-indigo-400">
-								{type === "login"
-									? "S'inscrire"
-									: "Se connecter"}
-							</span>
-						</Link>
-					</div>
+					{children}
 				</div>
 			</div>
 			<aside

@@ -1,6 +1,7 @@
 import { createClient } from "@/libs/supabase/server"
-import { AuthLayout } from "@/ui/shared/auth/auth-layout"
+import { LoginForm } from "@/ui/login/login-form"
 import { NextPage } from "next"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 
 const Login: NextPage = async () => {
@@ -9,7 +10,18 @@ const Login: NextPage = async () => {
 
 	if (data.user) redirect("/")
 
-	return <AuthLayout type="login" />
+	return (
+		<div>
+			<LoginForm />
+			<Link
+				href={"/inscription"}
+				className="mt-4 flex gap-2 text-gray-400 text-sm hover:opacity-80 transition-all duration-150 justify-center"
+			>
+				Pas de compte ?
+				<span className="text-indigo-400">S'inscrire</span>
+			</Link>
+		</div>
+	)
 }
 
 export default Login
