@@ -11,7 +11,7 @@ const Posters = ({ moviesPosters }: Pick<Props, "moviesPosters">) => (
 		{moviesPosters.map(({ poster_path }: any, i) => (
 			<div
 				key={i}
-				className="relative overflow-hidden rounded-md aspect-[2/3]"
+				className="relative overflow-hidden rounded-md border border-gray-700 aspect-[2/3]"
 			>
 				<Image
 					src={`https://image.tmdb.org/t/p/original/${poster_path}`}

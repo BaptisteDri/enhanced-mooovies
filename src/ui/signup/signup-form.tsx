@@ -41,19 +41,19 @@ export const SignupForm = () => {
 					<input type="checkbox" id="acceptCguPrivacy" required />
 					<label
 						htmlFor="acceptCguPrivacy"
-						className="cursor-pointer text-slate-400 text-xs"
+						className="cursor-pointer text-gray-400 text-xs"
 					>
 						J'ai lu et j'accepte les{" "}
 						<Link
 							href="/conditions-generales-d-utilisation"
-							className="text-indigo-600 hover:opacity-80 transition-opacity duration-150"
+							className="text-indigo-400 hover:opacity-80 transition-opacity duration-150"
 						>
 							CGU
 						</Link>{" "}
 						et la{" "}
 						<Link
 							href="/politique-de-confidentialite"
-							className="text-indigo-600 hover:opacity-80 transition-opacity duration-150"
+							className="text-indigo-400 hover:opacity-80 transition-opacity duration-150"
 						>
 							Politique de Confidentialité
 						</Link>

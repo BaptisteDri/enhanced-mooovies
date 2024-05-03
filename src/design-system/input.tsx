@@ -6,15 +6,15 @@ import { cva, type VariantProps } from "class-variance-authority"
 const input = cva(
 	[
 		"w-full",
-		"bg-slate-800 ring-indigo-600",
+		"bg-gray-800 ring-indigo-600",
 		"placeholder:text-chicago-600",
 		"rounded-md py-3 px-5",
-		"border border-slate-700 h-12",
+		"border border-gray-700 h-12",
 		"hover:bg-black-haze-50 transition-all duration-150",
 		"focus:outline-none",
 		"focus-visible:ring-1",
-		"disabled:bg-slate-700 disabled:cursor-not-allowed",
-		"placeholder:text-slate-400",
+		"disabled:bg-gray-700 disabled:cursor-not-allowed",
+		"placeholder:text-gray-400",
 	],
 	{
 		variants: {
