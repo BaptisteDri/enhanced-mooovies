@@ -14,6 +14,7 @@ const Submit = () => {
 			className="w-full"
 			formAction={signup}
 			loading={pending}
+			disabled={pending}
 		>
 			S'inscrire
 		</Button>
@@ -43,6 +44,7 @@ export const SignupForm = () => {
 				/>
 				<div className="flex items-center space-x-2">
 					<input type="checkbox" id="acceptCguPrivacy" required />
+
 					<label
 						htmlFor="acceptCguPrivacy"
 						className="cursor-pointer text-gray-400 text-xs"

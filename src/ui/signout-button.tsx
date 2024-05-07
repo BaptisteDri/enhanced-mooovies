@@ -2,7 +2,6 @@
 
 import { signout } from "@/app/signout/actions"
 import { Button } from "@/design-system/button"
-import { Spinner } from "@/design-system/spinner"
 import { useTransition } from "react"
 
 export const SignoutButton = () => {
@@ -15,7 +14,7 @@ export const SignoutButton = () => {
 	}
 
 	return (
-		<Button onClick={onSignout} loading={pending}>
+		<Button onClick={onSignout} loading={pending} disabled={pending}>
 			Se déconnecter
 		</Button>
 	)

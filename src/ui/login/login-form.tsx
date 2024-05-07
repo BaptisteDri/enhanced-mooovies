@@ -13,6 +13,7 @@ const Submit = () => {
 			className="w-full"
 			formAction={login}
 			loading={pending}
+			disabled={pending}
 		>
 			Se connecter
 		</Button>

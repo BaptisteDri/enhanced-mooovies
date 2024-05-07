@@ -30,7 +30,7 @@ const button = cva(
 					"hover:bg-indigo-500",
 					"active:bg-indigo-700",
 					"focus-visible:bg-indigo-700",
-					"disabled:bg-indigo-200",
+					"disabled:bg-indigo-400 disabled:text-gray-200",
 					"ring-indigo-400",
 				],
 			},
