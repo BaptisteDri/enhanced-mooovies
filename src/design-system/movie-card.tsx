@@ -12,16 +12,17 @@ export const MovieCard = ({ poster, title, className }: Props) => (
 	<Link
 		href={"#"}
 		className={twMerge(
-			"relative overflow-hidden rounded-md aspect-[2/3] flex group",
+			"relative overflow-hidden rounded-md aspect-[2/3] flex group bg-gray-900",
 			className,
 		)}
 	>
 		<Image
 			src={`https://image.tmdb.org/t/p/original/${poster}`}
 			alt={`${title} poster`}
-			height={450}
-			width={300}
+			fill
 			className="object-cover object-center md:group-hover:scale-105 transition-all duration-300 ease-in-out"
+			sizes="33vw"
+			quality={30}
 		/>
 	</Link>
 )

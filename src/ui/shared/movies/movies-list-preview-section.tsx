@@ -7,7 +7,8 @@ type Props = {
 }
 
 const MOVIES = Array(10).fill({
-	poster: "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+	// poster: "/pwGmXVKUgKN13psUjlhC9zBcq1o.jpg",
+	poster: "/rULWuutDcN5NvtiZi4FRPzRYWSh.jpg",
 	title: "Oppenheimer",
 })
 
