@@ -1,5 +1,8 @@
 import { createClient } from "@/libs/supabase/server"
+import { CategoriesListSection } from "@/ui/shared/movies/categories-list-section"
+import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
 import { Metadata, NextPage } from "next"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
@@ -14,7 +17,14 @@ const Home: NextPage = async () => {
 
 	if (!data.user) redirect("/connexion")
 
-	return <main></main>
+	return (
+		<main className="space-y-6 py-4 pb-24">
+			<h1 className="text-4xl font-semibold px-4">Mes films</h1>
+			<MoviesListPreviewSection href={"#"} title={"À voir"} />
+			<MoviesListPreviewSection href={"#"} title={"Vus"} />
+			<CategoriesListSection />
+		</main>
+	)
 }
 
 export default Home
