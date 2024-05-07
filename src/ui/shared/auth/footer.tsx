@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge"
 export const Footer = () => (
 	<footer
 		className={twMerge(
-			"space-x-6 mx-auto p-4 text-gray-500 text-sm",
+			"space-x-4 md:space-x-6 text-gray-500 text-xs md:text-sm",
 			"*:transition-opacity *:duration-150",
 		)}
 	>
