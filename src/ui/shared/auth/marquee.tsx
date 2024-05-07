@@ -1,31 +1,13 @@
-import Image from "next/image"
+import { DiscoverMovie } from "@/core/discover/discover-movies"
+import { MovieCard } from "@/design-system/movie-card"
 import { twMerge } from "tailwind-merge"
 
 type Props = {
-	moviesPosters: string[]
+	movies: DiscoverMovie[]
 	reverse?: boolean
 }
 
-const Posters = ({ moviesPosters }: Pick<Props, "moviesPosters">) => (
-	<>
-		{moviesPosters.map(({ poster_path }: any, i) => (
-			<div
-				key={i}
-				className="relative overflow-hidden rounded-md border border-gray-700 aspect-[2/3]"
-			>
-				<Image
-					src={`https://image.tmdb.org/t/p/original/${poster_path}`}
-					alt={"movie poster"}
-					height={450}
-					width={300}
-					className="object-cover object-center"
-				/>
-			</div>
-		))}
-	</>
-)
-
-export const Marquee = ({ moviesPosters, reverse }: Props) => (
+export const Marquee = ({ movies, reverse }: Props) => (
 	<div className="flex relative">
 		<div
 			className={twMerge(
@@ -33,7 +15,9 @@ export const Marquee = ({ moviesPosters, reverse }: Props) => (
 				reverse ? "animate-reverse-marquee" : "animate-marquee",
 			)}
 		>
-			<Posters moviesPosters={moviesPosters} />
+			{movies.map(({ poster_path, title, id }) => (
+				<MovieCard poster={poster_path} title={title} key={id} />
+			))}
 		</div>
 		<div
 			className={twMerge(
@@ -41,7 +25,9 @@ export const Marquee = ({ moviesPosters, reverse }: Props) => (
 				reverse ? "animate-reverse-marquee2" : "animate-marquee2",
 			)}
 		>
-			<Posters moviesPosters={moviesPosters} />
+			{movies.map(({ poster_path, title, id }) => (
+				<MovieCard poster={poster_path} title={title} key={id} />
+			))}
 		</div>
 	</div>
 )

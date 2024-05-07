@@ -2,7 +2,6 @@ import { createClient } from "@/libs/supabase/server"
 import { CategoriesListSection } from "@/ui/shared/movies/categories-list-section"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
 import { Metadata, NextPage } from "next"
-import Link from "next/link"
 import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
