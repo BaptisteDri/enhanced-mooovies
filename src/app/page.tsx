@@ -1,5 +1,4 @@
 import { createClient } from "@/libs/supabase/server"
-import { SignoutButton } from "@/ui/signout-button"
 import { Metadata, NextPage } from "next"
 import { redirect } from "next/navigation"
 
@@ -15,12 +14,7 @@ const Home: NextPage = async () => {
 
 	if (!data.user) redirect("/connexion")
 
-	return (
-		<main>
-			<div>{data.user.email}</div>
-			<SignoutButton />
-		</main>
-	)
+	return <main></main>
 }
 
 export default Home

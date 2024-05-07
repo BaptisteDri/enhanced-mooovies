@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { createClient } from "@/libs/supabase/server"
+import { Menu } from "@/design-system/menu"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -15,8 +16,8 @@ export default async function RootLayout({
 	return (
 		<html lang="fr">
 			<body className={inter.className}>
-				{/* {data.user ? children : <AuthLayout>{children}</AuthLayout>} */}
 				{children}
+				{data.user && <Menu />}
 			</body>
 		</html>
 	)
