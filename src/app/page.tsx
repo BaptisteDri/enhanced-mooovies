@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 }
 
 const Home: NextPage = async () => {
-	const supabase = createClient()
-	const { data } = await supabase.auth.getUser()
+	// const supabase = createClient()
+	// const { data } = await supabase.auth.getUser()
 
-	if (!data.user) redirect("/connexion")
+	// if (!data.user) redirect("/connexion")
 
 	return (
 		<main className="space-y-6 py-4 pb-24">

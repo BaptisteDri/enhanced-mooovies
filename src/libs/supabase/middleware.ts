@@ -2,6 +2,8 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function updateSession(request: NextRequest) {
+	console.log("updateSession")
+
 	let response = NextResponse.next({
 		request: {
 			headers: request.headers,
@@ -54,7 +56,16 @@ export async function updateSession(request: NextRequest) {
 		},
 	)
 
-	await supabase.auth.getUser()
+	const user = await supabase.auth.getUser()
+
+	if (
+		(request.nextUrl.pathname === "/" ||
+			request.nextUrl.pathname === "/recherche" ||
+			request.nextUrl.pathname === "/profil") &&
+		user.error
+	) {
+		return NextResponse.redirect(new URL("/connexion", request.url))
+	}
 
 	return response
 }
