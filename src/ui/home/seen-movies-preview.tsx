@@ -1,23 +1,23 @@
-import { createClient } from "@/libs/supabase/server"
+"use client"
+
+import { getSeenMovies } from "@/core/movies/queries/get-seen-movies"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
+import { useQuery } from "@tanstack/react-query"
 
-export const SeenMoviesPreview = async () => {
-	const supabase = createClient()
-	const { data: userData } = await supabase.auth.getUser()
+type Props = {
+	userId: string
+}
 
-	const { data } = await supabase
-		.from("films")
-		.select()
-		.eq("user_id", userData.user?.id)
-		.limit(10)
-		.not("watched_date", "is", null)
-		.order("watched_date", { ascending: false })
+export const SeenMoviesPreview = ({ userId }: Props) => {
+	const { data: movies } = useQuery(
+		getSeenMovies({ dto: { limit: 10, userId } }),
+	)
 
-	return data && data.length > 0 ? (
+	return movies && movies.length > 0 ? (
 		<MoviesListPreviewSection
 			href={"#"}
 			title={"Revoir"}
-			movies={data || []}
+			movies={movies || []}
 		/>
 	) : (
 		<></>

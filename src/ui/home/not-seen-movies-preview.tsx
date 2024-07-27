@@ -1,23 +1,23 @@
-import { createClient } from "@/libs/supabase/server"
+"use client"
+
+import { getNotSeenMovies } from "@/core/movies/queries/get-not-seen-movies"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
+import { useQuery } from "@tanstack/react-query"
 
-export const NotSeenMoviesPreview = async () => {
-	const supabase = createClient()
-	const { data: userData } = await supabase.auth.getUser()
+type Props = {
+	userId: string
+}
 
-	const { data } = await supabase
-		.from("films")
-		.select()
-		.eq("user_id", userData.user?.id)
-		.limit(10)
-		.is("watched_date", null)
-		.order("added_date", { ascending: false })
+export const NotSeenMoviesPreview = ({ userId }: Props) => {
+	const { data: movies } = useQuery(
+		getNotSeenMovies({ dto: { limit: 10, userId } }),
+	)
 
 	return (
 		<MoviesListPreviewSection
 			href={"#"}
 			title={"À voir"}
-			movies={data || []}
+			movies={movies || []}
 		/>
 	)
 }

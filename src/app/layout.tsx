@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { createClient } from "@/libs/supabase/server"
 import { Menu } from "@/design-system/menu"
+import ReactQueryProvider from "@/ui/providers/react-query-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -10,14 +10,13 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const supabase = createClient()
-	const { data } = await supabase.auth.getUser()
-
 	return (
 		<html lang="fr">
 			<body className={inter.className}>
-				{children}
-				{data.user && <Menu />}
+				<ReactQueryProvider>
+					{children}
+					<Menu />
+				</ReactQueryProvider>
 			</body>
 		</html>
 	)
