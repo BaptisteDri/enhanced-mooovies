@@ -1,3 +1,4 @@
+import { Movie } from "@/core/movies/types/movie"
 import { PlusCircle } from "@/design-system/icons/plus-circle"
 import { MovieCard } from "@/design-system/movie-card"
 import Link from "next/link"
@@ -5,7 +6,7 @@ import Link from "next/link"
 type Props = {
 	href: string
 	title: string
-	movies: { poster: string; title: string }[]
+	movies: Movie[]
 }
 
 export const MoviesListPreviewSection = ({ href, title, movies }: Props) => (
@@ -15,10 +16,9 @@ export const MoviesListPreviewSection = ({ href, title, movies }: Props) => (
 			<span className="text-xs text-gray-400">voir plus</span>
 		</Link>
 		<div className="flex gap-4 overflow-x-auto no-scrollbar px-4">
-			{movies.map(({ poster, title }, i) => (
+			{movies.map((movie, i) => (
 				<MovieCard
-					poster={poster}
-					title={title}
+					movie={{ ...movie, type: "movie" }}
 					key={i}
 					className={"min-w-[33vw]"}
 				/>
@@ -26,7 +26,7 @@ export const MoviesListPreviewSection = ({ href, title, movies }: Props) => (
 			{movies.length === 0 && (
 				<Link
 					href="/recherche"
-					className="rounded-md aspect-[2/3] bg-gray-900 min-w-[33vw] flex items-center justify-center flex-col gap-2 text-sm text-slate-300"
+					className="rounded-md aspect-[2/3] bg-gray-900 min-w-[33vw] flex items-center justify-center flex-col gap-2 text-sm text-gray-300"
 				>
 					<PlusCircle size={24} />
 					Ajouter un film

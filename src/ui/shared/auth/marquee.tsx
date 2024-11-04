@@ -15,11 +15,10 @@ export const Marquee = ({ movies, reverse }: Props) => (
 				reverse ? "animate-reverse-marquee" : "animate-marquee",
 			)}
 		>
-			{movies.map(({ poster_path, title, id }) => (
+			{movies.map((movie) => (
 				<MovieCard
-					poster={poster_path}
-					title={title}
-					key={id}
+					movie={{ type: "discover", ...movie }}
+					key={movie.id}
 					clickable={false}
 				/>
 			))}
@@ -30,11 +29,10 @@ export const Marquee = ({ movies, reverse }: Props) => (
 				reverse ? "animate-reverse-marquee2" : "animate-marquee2",
 			)}
 		>
-			{movies.map(({ poster_path, title, id }) => (
+			{movies.map((movie) => (
 				<MovieCard
-					poster={poster_path}
-					title={title}
-					key={id}
+					movie={{ type: "discover", ...movie }}
+					key={movie.id}
 					clickable={false}
 				/>
 			))}

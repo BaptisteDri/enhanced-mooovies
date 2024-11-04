@@ -35,7 +35,7 @@ export const CategoriesListSection = () => {
 						key={i}
 						className={twMerge(
 							"aspect-video rounded-md flex flex-col gap-2 justify-between py-2 px-3 shadow-lg",
-							"bg-gradient-to-br from-transparent via-transparent bg-slate-900",
+							"bg-gradient-to-br from-transparent via-transparent bg-gray-900",
 							categoriesColor[category.id],
 						)}
 					>
