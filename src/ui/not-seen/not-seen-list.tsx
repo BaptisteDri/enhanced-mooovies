@@ -2,6 +2,7 @@
 
 import { getInfiniteNotSeenMovies } from "@/core/movies/queries/get-infinite-not-seen-movies"
 import { MovieCard } from "@/design-system/movie-card"
+import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import React, { useEffect, useRef } from "react"
 
@@ -19,7 +20,7 @@ export const NotSeenList = ({ userId }: Props) => {
 		offset: 0,
 	}
 
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
 		useInfiniteQuery(getInfiniteNotSeenMovies({ dto }))
 
 	useEffect(() => {
@@ -59,7 +60,8 @@ export const NotSeenList = ({ userId }: Props) => {
 				)}
 			</h1>
 			<section className="grid grid-cols-3 gap-4 px-4">
-				{data?.pages.map((page, i) =>
+				{isFetching && !isFetchingNextPage && <MoviesListSkeleton />}
+				{data?.pages.map((page) =>
 					page.movies.map((movie, i) => (
 						<MovieCard
 							movie={{ ...movie, type: "movie" }}
@@ -68,13 +70,10 @@ export const NotSeenList = ({ userId }: Props) => {
 						/>
 					)),
 				)}
+				{isFetchingNextPage && <MoviesListSkeleton />}
 			</section>
-			<div ref={observerRef}>
-				{isFetchingNextPage
-					? "Loading more..."
-					: hasNextPage
-						? "Load More"
-						: "Nothing more to load"}
+			<div ref={observerRef} className="text-center text-gray-300">
+				{!hasNextPage && "Fin de la liste 🎬"}
 			</div>
 		</>
 	)

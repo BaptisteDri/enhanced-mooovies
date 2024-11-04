@@ -1,7 +1,9 @@
 "use client"
 
+import { GetMoviesDto } from "@/core/movies/infrastructure/movies.supabase"
 import { getInfiniteSeenMovies } from "@/core/movies/queries/get-infinite-seen-movies"
 import { MovieCard } from "@/design-system/movie-card"
+import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import React, { useEffect, useRef } from "react"
 
@@ -12,18 +14,19 @@ type Props = {
 export const SeenList = ({ userId }: Props) => {
 	const observerRef = useRef<HTMLDivElement>(null)
 
-	const dto = {
+	const dto: GetMoviesDto = {
 		userId,
 		seen: true,
 		limit: 15,
 		offset: 0,
+		orderBy: "watched_date",
 	}
 
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
 		useInfiniteQuery(getInfiniteSeenMovies({ dto }))
 
 	useEffect(() => {
-		if (!hasNextPage || isFetchingNextPage) return
+		if (!hasNextPage) return
 
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -59,6 +62,7 @@ export const SeenList = ({ userId }: Props) => {
 				)}
 			</h1>
 			<section className="grid grid-cols-3 gap-4 px-4">
+				{isFetching && !isFetchingNextPage && <MoviesListSkeleton />}
 				{data?.pages.map((page, i) =>
 					page.movies.map((movie, i) => (
 						<MovieCard
@@ -68,13 +72,10 @@ export const SeenList = ({ userId }: Props) => {
 						/>
 					)),
 				)}
+				{isFetchingNextPage && <MoviesListSkeleton />}
 			</section>
-			<div ref={observerRef}>
-				{isFetchingNextPage
-					? "Loading more..."
-					: hasNextPage
-						? "Load More"
-						: "Nothing more to load"}
+			<div ref={observerRef} className="text-center text-gray-300">
+				{!hasNextPage && "Fin de la liste 🎬"}
 			</div>
 		</>
 	)
