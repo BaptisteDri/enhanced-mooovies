@@ -4,20 +4,22 @@ import { createClient } from "@/libs/supabase/client"
 const supabase = createClient()
 
 export type GetMoviesDto = {
-	limit?: number
-	seen: boolean
 	userId: string
+	limit?: number
+	offset?: number | null
+	seen?: boolean
 }
 
 export type GetMoviesResponse = {
 	movies: Movie[]
 	amount: number | null
+	nextCursor?: number
 }
 
 export const movies: {
-	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | null | undefined>
+	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
 } = {
-	get: async ({ userId, limit, seen }) => {
+	get: async ({ userId, limit = 0, seen, offset = 0 }) => {
 		try {
 			const query = supabase
 				.from("films")
@@ -35,15 +37,31 @@ export const movies: {
 				query.limit(limit)
 			}
 
+			if (offset && limit) {
+				console.log(
+					"offset",
+					offset,
+					"limit",
+					limit,
+					!!(offset && limit),
+				)
+				query.range(offset, offset + limit - 1)
+			}
+
 			const { data, error, count } = await query
+
+			if (error?.code === "PGRST103") return undefined
 
 			if (error) throw error
 
 			return {
 				movies: data,
 				amount: count,
+				nextCursor: offset ? offset + limit : limit,
 			}
 		} catch (error) {
+			console.log("error", error)
+
 			console.error(error)
 		}
 	},
