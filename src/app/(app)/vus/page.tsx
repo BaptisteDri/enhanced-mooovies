@@ -1,8 +1,7 @@
 import { createClient } from "@/libs/supabase/server"
-import { NotSeenList } from "@/ui/not-seen/not-seen-list"
 import { SeenList } from "@/ui/seen/seen-list"
 
-const RevoirPage = async () => {
+const VusPage = async () => {
 	const supabase = createClient()
 	const { data } = await supabase.auth.getUser()
 	const userId = data.user?.id || ""
@@ -10,4 +9,4 @@ const RevoirPage = async () => {
 	return <SeenList userId={userId} />
 }
 
-export default RevoirPage
+export default VusPage

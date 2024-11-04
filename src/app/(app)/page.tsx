@@ -32,7 +32,11 @@ const Home: NextPage = async () => {
 	const seenMoviesData = await queryClient.fetchQuery(
 		getSeenMovies({
 			enabled: true,
-			dto: { limit: 6, userId: data.user?.id || "" },
+			dto: {
+				limit: 6,
+				userId: data.user?.id || "",
+				orderBy: "watched_date",
+			},
 		}),
 	)
 

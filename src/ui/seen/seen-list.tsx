@@ -23,7 +23,7 @@ export const SeenList = ({ userId }: Props) => {
 	return (
 		<>
 			<h1 className="text-4xl font-semibold px-4">
-				Revoir
+				Vus
 				{!!data?.pages[0].amount && (
 					<span className="text-lg ml-2 text-gray-400 font-normal">
 						({data?.pages[0].amount})

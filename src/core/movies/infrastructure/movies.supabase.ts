@@ -8,6 +8,8 @@ export type GetMoviesDto = {
 	limit?: number
 	offset?: number | null
 	seen?: boolean
+	ascending?: boolean
+	orderBy?: "watched_date" | "added_date"
 }
 
 export type GetMoviesResponse = {
@@ -19,13 +21,20 @@ export type GetMoviesResponse = {
 export const movies: {
 	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
 } = {
-	get: async ({ userId, limit = 0, seen, offset = 0 }) => {
+	get: async ({
+		userId,
+		limit = 0,
+		seen,
+		offset = 0,
+		orderBy = "added_date",
+		ascending = false,
+	}) => {
 		try {
 			const query = supabase
 				.from("films")
 				.select("*", { count: "exact" })
 				.eq("user_id", userId)
-				.order("added_date", { ascending: false })
+				.order(orderBy, { ascending })
 
 			if (seen) {
 				query.not("watched_date", "is", null)
