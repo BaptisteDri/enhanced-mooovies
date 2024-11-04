@@ -38,13 +38,6 @@ export const movies: {
 			}
 
 			if (offset && limit) {
-				console.log(
-					"offset",
-					offset,
-					"limit",
-					limit,
-					!!(offset && limit),
-				)
 				query.range(offset, offset + limit - 1)
 			}
 
@@ -60,8 +53,6 @@ export const movies: {
 				nextCursor: offset ? offset + limit : limit,
 			}
 		} catch (error) {
-			console.log("error", error)
-
 			console.error(error)
 		}
 	},

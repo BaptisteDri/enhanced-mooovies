@@ -18,7 +18,6 @@ export const getInfiniteMovies = ({ dto }: Options) => ({
 		},
 	initialPageParam: dto,
 	getNextPageParam: (lastPage: GetMoviesResponse) => {
-		console.log("lastPage", lastPage)
 		if (lastPage.movies.length === 0 || !lastPage.nextCursor)
 			return undefined
 		return {
