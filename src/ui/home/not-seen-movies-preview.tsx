@@ -15,7 +15,7 @@ export const NotSeenMoviesPreview = ({ userId }: Props) => {
 	return (
 		<MoviesListPreviewSection
 			amount={amount}
-			href={"#"}
+			href={"/a-voir"}
 			title={"À voir"}
 			movies={movies || []}
 		/>
