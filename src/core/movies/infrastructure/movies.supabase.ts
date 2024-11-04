@@ -9,14 +9,19 @@ export type GetMoviesDto = {
 	userId: string
 }
 
+export type GetMoviesResponse = {
+	movies: Movie[]
+	amount: number | null
+}
+
 export const movies: {
-	get: (dto: GetMoviesDto) => Promise<Movie[] | null | undefined>
+	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | null | undefined>
 } = {
 	get: async ({ userId, limit, seen }) => {
 		try {
 			const query = supabase
 				.from("films")
-				.select()
+				.select("*", { count: "exact" })
 				.eq("user_id", userId)
 				.order("added_date", { ascending: false })
 
@@ -30,11 +35,14 @@ export const movies: {
 				query.limit(limit)
 			}
 
-			const { data, error } = await query
+			const { data, error, count } = await query
 
 			if (error) throw error
 
-			return data
+			return {
+				movies: data,
+				amount: count,
+			}
 		} catch (error) {
 			console.error(error)
 		}

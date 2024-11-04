@@ -4,15 +4,28 @@ import { MovieCard } from "@/design-system/movie-card"
 import Link from "next/link"
 
 type Props = {
+	amount?: number | null
 	href: string
 	title: string
 	movies: Movie[]
 }
 
-export const MoviesListPreviewSection = ({ href, title, movies }: Props) => (
+export const MoviesListPreviewSection = ({
+	amount,
+	href,
+	title,
+	movies,
+}: Props) => (
 	<section className="space-y-4">
 		<Link href={href} className="px-4 flex justify-between items-baseline">
-			<h2 className="font-medium text-xl">{title}</h2>
+			<h2 className="font-medium text-xl">
+				{title}
+				{typeof amount !== "undefined" && !!amount && (
+					<span className="text-sm ml-2 text-gray-400 font-normal">
+						({amount})
+					</span>
+				)}
+			</h2>
 			<span className="text-xs text-gray-400">voir plus</span>
 		</Link>
 		<div className="flex gap-4 overflow-x-auto no-scrollbar px-4">

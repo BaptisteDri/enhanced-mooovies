@@ -22,24 +22,34 @@ const Home: NextPage = async () => {
 	const supabase = createClient()
 	const { data } = await supabase.auth.getUser()
 
-	await queryClient.prefetchQuery(
+	const notSeenMoviesData = await queryClient.fetchQuery(
 		getNotSeenMovies({
 			enabled: true,
-			dto: { limit: 10, userId: data.user?.id || "" },
+			dto: { limit: 6, userId: data.user?.id || "" },
 		}),
 	)
 
-	await queryClient.prefetchQuery(
+	const seenMoviesData = await queryClient.fetchQuery(
 		getSeenMovies({
 			enabled: true,
-			dto: { limit: 10, userId: data.user?.id || "" },
+			dto: { limit: 6, userId: data.user?.id || "" },
 		}),
 	)
+
+	const amount =
+		(seenMoviesData?.amount || 0) + (notSeenMoviesData?.amount || 0)
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<main className="space-y-6 py-4 pb-24">
-				<h1 className="text-4xl font-semibold px-4">Mes films</h1>
+				<h1 className="text-4xl font-semibold px-4">
+					Mes films
+					{!!amount && (
+						<span className="text-lg ml-2 text-gray-400 font-normal">
+							({amount})
+						</span>
+					)}
+				</h1>
 				<NotSeenMoviesPreview userId={data.user?.id || ""} />
 				<SeenMoviesPreview userId={data.user?.id || ""} />
 				<CategoriesListSection />

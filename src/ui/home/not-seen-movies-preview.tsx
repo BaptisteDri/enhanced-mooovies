@@ -9,12 +9,12 @@ type Props = {
 }
 
 export const NotSeenMoviesPreview = ({ userId }: Props) => {
-	const { data: movies } = useQuery(
-		getNotSeenMovies({ dto: { limit: 10, userId } }),
-	)
+	const { data } = useQuery(getNotSeenMovies({ dto: { limit: 10, userId } }))
+	const { amount, movies } = { ...data }
 
 	return (
 		<MoviesListPreviewSection
+			amount={amount}
 			href={"#"}
 			title={"À voir"}
 			movies={movies || []}

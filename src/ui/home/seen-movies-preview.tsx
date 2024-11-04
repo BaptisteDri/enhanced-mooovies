@@ -9,12 +9,12 @@ type Props = {
 }
 
 export const SeenMoviesPreview = ({ userId }: Props) => {
-	const { data: movies } = useQuery(
-		getSeenMovies({ dto: { limit: 10, userId } }),
-	)
+	const { data } = useQuery(getSeenMovies({ dto: { limit: 10, userId } }))
+	const { amount, movies } = { ...data }
 
 	return movies && movies.length > 0 ? (
 		<MoviesListPreviewSection
+			amount={amount}
 			href={"#"}
 			title={"Revoir"}
 			movies={movies || []}
