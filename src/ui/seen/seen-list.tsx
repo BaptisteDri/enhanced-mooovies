@@ -36,6 +36,7 @@ export const SeenList = ({ userId }: Props) => {
 						<MovieCard
 							movie={{ ...movie, type: "movie" }}
 							key={i}
+							sizes="33vw"
 						/>
 					)),
 				)}

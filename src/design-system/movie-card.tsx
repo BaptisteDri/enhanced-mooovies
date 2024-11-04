@@ -8,9 +8,15 @@ type Props = {
 	movie: ({ type: "movie" } & Movie) | ({ type: "discover" } & DiscoverMovie)
 	className?: string
 	clickable?: boolean
+	sizes?: string
 }
 
-export const MovieCard = ({ movie, className, clickable = true }: Props) =>
+export const MovieCard = ({
+	movie,
+	className,
+	clickable = true,
+	sizes = "300px",
+}: Props) =>
 	clickable ? (
 		<MovieDrawer movie={movie} className={className} />
 	) : (
@@ -26,7 +32,7 @@ export const MovieCard = ({ movie, className, clickable = true }: Props) =>
 				alt={`${movie.title} poster`}
 				fill
 				className="object-cover object-center"
-				sizes="300px"
+				sizes={sizes}
 				priority
 			/>
 		</div>

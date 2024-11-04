@@ -36,6 +36,7 @@ export const NotSeenList = ({ userId }: Props) => {
 						<MovieCard
 							movie={{ ...movie, type: "movie" }}
 							key={i}
+							sizes="33vw"
 						/>
 					)),
 				)}
