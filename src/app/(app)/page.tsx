@@ -41,19 +41,17 @@ const Home: NextPage = async () => {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<main className="space-y-6 py-4 pb-24">
-				<h1 className="text-4xl font-semibold px-4">
-					Mes films
-					{!!amount && (
-						<span className="text-lg ml-2 text-gray-400 font-normal">
-							({amount})
-						</span>
-					)}
-				</h1>
-				<NotSeenMoviesPreview userId={data.user?.id || ""} />
-				<SeenMoviesPreview userId={data.user?.id || ""} />
-				<CategoriesListSection />
-			</main>
+			<h1 className="text-4xl font-semibold px-4">
+				Mes films
+				{!!amount && (
+					<span className="text-lg ml-2 text-gray-400 font-normal">
+						({amount})
+					</span>
+				)}
+			</h1>
+			<NotSeenMoviesPreview userId={data.user?.id || ""} />
+			<SeenMoviesPreview userId={data.user?.id || ""} />
+			<CategoriesListSection />
 		</HydrationBoundary>
 	)
 }
