@@ -9,10 +9,10 @@ type Props = {
 	userId: string
 }
 
-export const NotSeenList = ({ userId }: Props) => {
+export const SeenList = ({ userId }: Props) => {
 	const dto = {
 		userId,
-		seen: false,
+		seen: true,
 		limit: 15,
 		offset: 0,
 	}
@@ -23,7 +23,7 @@ export const NotSeenList = ({ userId }: Props) => {
 	return (
 		<>
 			<h1 className="text-4xl font-semibold px-4">
-				À voir
+				Revoir
 				{!!data?.pages[0].amount && (
 					<span className="text-lg ml-2 text-gray-400 font-normal">
 						({data?.pages[0].amount})

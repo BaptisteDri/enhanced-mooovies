@@ -26,7 +26,7 @@ export const MoviesListPreviewSection = ({
 					</span>
 				)}
 			</h2>
-			<span className="text-xs text-gray-400">voir plus</span>
+			<span className="text-sm text-gray-400">voir plus</span>
 		</Link>
 		<div className="flex gap-4 overflow-x-auto no-scrollbar px-4">
 			{movies.map((movie, i) => (

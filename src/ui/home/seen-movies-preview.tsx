@@ -15,7 +15,7 @@ export const SeenMoviesPreview = ({ userId }: Props) => {
 	return movies && movies.length > 0 ? (
 		<MoviesListPreviewSection
 			amount={amount}
-			href={"#"}
+			href={"/revoir"}
 			title={"Revoir"}
 			movies={movies || []}
 		/>
