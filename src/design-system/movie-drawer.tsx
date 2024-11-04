@@ -30,7 +30,10 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 		</Drawer.Trigger>
 		<Drawer.Portal>
 			<Drawer.Overlay className="fixed inset-0 bg-gray-950/40 z-20" />
-			<Drawer.Content className="bg-gray-900 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0 z-30">
+			<Drawer.Content
+				aria-describedby={""} // @TODO: Add aria-describedby with the movie id
+				className="bg-gray-900 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0 z-30"
+			>
 				<div className="bg-gray-900 rounded-t-[10px] flex-1 overflow-hidden">
 					<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-700 mt-5" />
 
@@ -41,7 +44,7 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 								alt={`${movie.title} poster`}
 								fill
 								className="object-cover object-top"
-								sizes="100vw"
+								sizes="128px"
 							/>
 						</section>
 
