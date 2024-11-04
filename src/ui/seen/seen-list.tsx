@@ -1,15 +1,17 @@
 "use client"
 
-import { getInfiniteMovies } from "@/core/movies/queries/get-infinite-movies"
+import { getInfiniteSeenMovies } from "@/core/movies/queries/get-infinite-seen-movies"
 import { MovieCard } from "@/design-system/movie-card"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 
 type Props = {
 	userId: string
 }
 
 export const SeenList = ({ userId }: Props) => {
+	const observerRef = useRef<HTMLDivElement>(null)
+
 	const dto = {
 		userId,
 		seen: true,
@@ -18,7 +20,33 @@ export const SeenList = ({ userId }: Props) => {
 	}
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		useInfiniteQuery(getInfiniteMovies({ dto }))
+		useInfiniteQuery(getInfiniteSeenMovies({ dto }))
+
+	useEffect(() => {
+		if (!hasNextPage || isFetchingNextPage) return
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (
+					entries[0].isIntersecting &&
+					hasNextPage &&
+					!isFetchingNextPage
+				) {
+					fetchNextPage()
+				}
+			},
+			{
+				rootMargin: "100px",
+				threshold: 0.1,
+			},
+		)
+
+		if (observerRef.current) {
+			observer.observe(observerRef.current)
+		}
+
+		return () => observer.disconnect()
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
 	return (
 		<>
@@ -41,16 +69,13 @@ export const SeenList = ({ userId }: Props) => {
 					)),
 				)}
 			</section>
-			<button
-				disabled={!hasNextPage || isFetchingNextPage}
-				onClick={() => fetchNextPage()}
-			>
+			<div ref={observerRef}>
 				{isFetchingNextPage
 					? "Loading more..."
 					: hasNextPage
 						? "Load More"
 						: "Nothing more to load"}
-			</button>
+			</div>
 		</>
 	)
 }

@@ -8,9 +8,9 @@ type Options = {
 	dto: GetMoviesDto
 }
 
-export const getInfiniteMovies = ({ dto }: Options) => ({
-	queryKey: ["GET-MOVIES-INFINITE"],
-	queryFn: async (params: any) =>
+export const getInfiniteNotSeenMovies = ({ dto }: Options) => ({
+	queryKey: ["GET-MOVIES-NOT-SEEN-INFINITE"],
+	queryFn: async (params: { pageParam: GetMoviesDto }) =>
 		(await movies.get(params.pageParam)) ?? {
 			movies: [],
 			amount: null,

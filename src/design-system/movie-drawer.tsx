@@ -53,7 +53,9 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 								{movie.title}
 							</h2>
 						</Drawer.Title>
-						<p className="text-gray-400 mb-2">{movie.overview}</p>
+						<p className="text-gray-400 mb-2 line-clamp-4">
+							{movie.overview}
+						</p>
 					</div>
 				</div>
 			</Drawer.Content>
