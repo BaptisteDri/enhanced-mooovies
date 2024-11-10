@@ -10,6 +10,8 @@ type Options = {
 
 export const getNotSeenMovies = ({ enabled = false, dto }: Options) => ({
 	queryKey: ["GET-MOVIES-NOT-SEEN"],
-	queryFn: async () => await movies.get({ ...dto, seen: false }),
+	queryFn: async () => {
+		return await movies.get({ ...dto, seen: false })
+	},
 	enabled,
 })

@@ -15,7 +15,11 @@ export const toggleMovieIsSeen = ({ queryClient }: Options) => ({
 	},
 	onSuccess: async () => {
 		await queryClient.invalidateQueries({
-			queryKey: ["GET-MOVIES", "GET-MOVIES-NOT-SEEN"],
+			queryKey: ["GET-MOVIES"],
+		})
+
+		await queryClient.invalidateQueries({
+			queryKey: ["GET-MOVIES-NOT-SEEN"],
 		})
 	},
 })

@@ -9,7 +9,9 @@ type Props = {
 }
 
 export const NotSeenMoviesPreview = ({ userId }: Props) => {
-	const { data } = useQuery(getNotSeenMovies({ dto: { limit: 10, userId } }))
+	const { data } = useQuery(
+		getNotSeenMovies({ dto: { limit: 10, userId }, enabled: true }),
+	)
 	const { amount, movies } = { ...data }
 
 	return (

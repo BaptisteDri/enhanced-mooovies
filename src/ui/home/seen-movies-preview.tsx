@@ -16,6 +16,7 @@ export const SeenMoviesPreview = ({ userId }: Props) => {
 				userId,
 				orderBy: "watched_date",
 			},
+			enabled: true,
 		}),
 	)
 	const { amount, movies } = { ...data }

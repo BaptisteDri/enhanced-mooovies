@@ -34,7 +34,6 @@ export const movies: {
 		orderBy = "added_date",
 		ascending = false,
 	}) => {
-		console.log("get movies")
 		try {
 			const query = supabase
 				.from("films")
