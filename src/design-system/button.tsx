@@ -33,6 +33,15 @@ const button = cva(
 					"disabled:bg-indigo-400 disabled:text-gray-200",
 					"ring-indigo-400",
 				],
+				secondary: [
+					"bg-gray-800",
+					"text-gray-200",
+					"hover:bg-gray-700",
+					"active:bg-gray-600",
+					"focus-visible:bg-gray-600",
+					"disabled:bg-gray-800 disabled:text-gray-400",
+					"ring-gray-400",
+				],
 			},
 			size: {
 				base: ["py-4", "px-7", "rounded-md"],

@@ -1,5 +1,7 @@
 import { DiscoverMovie } from "@/core/discover/discover-movies"
 import { Movie } from "@/core/movies/types/movie"
+import { Button } from "@/design-system/button"
+import { Icon } from "@/design-system/icons"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { Drawer } from "vaul"
@@ -47,15 +49,65 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 								sizes="128px"
 							/>
 						</section>
-
+						{movie.type === "movie" && !!movie.watched_date && (
+							<p className="mb-4 border w-fit px-3 py-1.5 text-sm border-indigo-500 rounded-md bg-gradient-to-br from-indigo-950 to-indigo-900 flex items-center gap-2">
+								<Icon name="eye" size={12} />
+								Vu le{" "}
+								{new Date(
+									movie.watched_date,
+								).toLocaleDateString()}
+							</p>
+						)}
 						<Drawer.Title className="font-medium mb-4" asChild>
 							<h2 className="text-2xl font-semibold">
 								{movie.title}
+								{movie.title !== movie.original_title && (
+									<>
+										<br />
+										<span className="text-base text-gray-400 font-normal italic">
+											{movie.original_title}
+										</span>
+									</>
+								)}
 							</h2>
 						</Drawer.Title>
-						<p className="text-gray-400 mb-2 line-clamp-4">
-							{movie.overview}
-						</p>
+
+						<p className="mb-2 line-clamp-4">{movie.overview}</p>
+						<section className="flex gap-4 mt-6 border-t border-gray-800 pt-4">
+							{movie.type === "movie" && !!movie.watched_date ? (
+								<Button
+									intent={"secondary"}
+									className="flex-1 [&>span]:flex [&>span]:items-center [&>span]:gap-3 py-0 h-12"
+								>
+									<Icon name="eye-slash" size={20} />
+									Retirer des films vus
+								</Button>
+							) : (
+								<Button className="flex-1 [&>span]:flex [&>span]:items-center [&>span]:gap-3 py-0 h-12">
+									<Icon name="eye" size={20} />
+									Marquer comme vu
+								</Button>
+							)}
+
+							<Button
+								className="w-12 p-0"
+								intent={
+									movie.type === "movie" && !!movie.added_date
+										? "secondary"
+										: "primary"
+								}
+							>
+								<Icon
+									name={
+										movie.type === "movie" &&
+										!!movie.added_date
+											? "check"
+											: "plus"
+									}
+									size={20}
+								/>
+							</Button>
+						</section>
 					</div>
 				</div>
 			</Drawer.Content>
