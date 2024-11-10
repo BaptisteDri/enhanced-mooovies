@@ -34,7 +34,7 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 			</button>
 		</Drawer.Trigger>
 		<Drawer.Portal>
-			<Drawer.Overlay className="fixed inset-0 bg-gray-950/40 z-20" />
+			<Drawer.Overlay className="fixed inset-0 bg-gray-950/50 z-20" />
 			<Drawer.Content
 				aria-describedby={""} // @TODO: Add aria-describedby with the movie id
 				className="bg-gray-900 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0 z-30"
