@@ -55,7 +55,11 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 								Vu le{" "}
 								{new Date(
 									movie.watched_date,
-								).toLocaleDateString()}
+								).toLocaleDateString("fr-FR", {
+									day: "numeric",
+									month: "long",
+									year: "numeric",
+								})}
 							</p>
 						)}
 						<Drawer.Title className="font-medium mb-4" asChild>
