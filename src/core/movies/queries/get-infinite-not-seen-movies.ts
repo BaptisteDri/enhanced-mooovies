@@ -12,7 +12,7 @@ type Options = {
 export const GET_MOVIES_NOT_SEEN_INFINITE_KEY = "GET-MOVIES-NOT-SEEN-INFINITE"
 
 export const getInfiniteNotSeenMovies = ({ dto }: Options) => ({
-	queryKey: [GET_MOVIES_NOT_SEEN_INFINITE_KEY],
+	queryKey: [GET_MOVIES_NOT_SEEN_INFINITE_KEY, dto],
 	queryFn: async (params: { pageParam: GetMoviesDto }) =>
 		(await movies.get(params.pageParam)) ?? {
 			movies: [],

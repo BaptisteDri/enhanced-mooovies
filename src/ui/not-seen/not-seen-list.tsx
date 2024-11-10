@@ -54,8 +54,6 @@ export const NotSeenList = ({ userId }: Props) => {
 		return () => observer.disconnect()
 	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-	console.log(data?.pages?.[0]?.movies)
-
 	return (
 		<>
 			<h1 className="text-4xl font-semibold px-4">
