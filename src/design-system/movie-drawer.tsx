@@ -40,12 +40,19 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 					<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-700 mt-5" />
 
 					<div className="max-w-md mx-auto p-4">
-						<section className="relative overflow-hidden rounded-md aspect-[2/3] flex bg-gray-900 w-32 mb-6">
+						<section className="relative aspect-[2/3] flex bg-gray-900 w-32 mb-6">
 							<Image
 								src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
 								alt={`${movie.title} poster`}
 								fill
-								className="object-cover object-top"
+								className="object-cover object-top blur-3xl"
+								sizes="128px"
+							/>
+							<Image
+								src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
+								alt={`${movie.title} poster`}
+								fill
+								className="object-cover object-top rounded-md"
 								sizes="128px"
 							/>
 						</section>
