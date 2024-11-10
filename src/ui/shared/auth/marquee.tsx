@@ -19,7 +19,6 @@ export const Marquee = ({ movies, reverse }: Props) => (
 				<MovieCard
 					movie={{ type: "discover", ...movie }}
 					key={movie.id}
-					clickable={false}
 				/>
 			))}
 		</div>
@@ -33,7 +32,6 @@ export const Marquee = ({ movies, reverse }: Props) => (
 				<MovieCard
 					movie={{ type: "discover", ...movie }}
 					key={movie.id}
-					clickable={false}
 				/>
 			))}
 		</div>

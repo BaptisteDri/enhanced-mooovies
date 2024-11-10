@@ -1,8 +1,7 @@
 import { getNotSeenMovies } from "@/core/movies/queries/get-not-seen-movies"
 import { getSeenMovies } from "@/core/movies/queries/get-seen-movies"
 import { createClient } from "@/libs/supabase/server"
-import { NotSeenMoviesPreview } from "@/ui/home/not-seen-movies-preview"
-import { SeenMoviesPreview } from "@/ui/home/seen-movies-preview"
+import { PreviewedMovies } from "@/ui/home/previewed-movies"
 import { CategoriesListSection } from "@/ui/shared/movies/categories-list-section"
 import {
 	dehydrate,
@@ -53,8 +52,7 @@ const Home: NextPage = async () => {
 					</span>
 				)}
 			</h1>
-			<NotSeenMoviesPreview userId={data.user?.id || ""} />
-			<SeenMoviesPreview userId={data.user?.id || ""} />
+			<PreviewedMovies userId={data.user?.id || ""} />
 			<CategoriesListSection />
 		</HydrationBoundary>
 	)
