@@ -1,7 +1,7 @@
 import { DiscoverMovie } from "@/core/discover/discover-movies"
 import { Movie } from "@/core/movies/types/movie"
-import { Button } from "@/design-system/button"
-import { Icon } from "@/design-system/icons"
+
+import { DrawerActions } from "@/design-system/movie-drawer/drawer-actions"
 import { DrawerPoster } from "@/design-system/movie-drawer/drawer-poster"
 import { DrawerTitle } from "@/design-system/movie-drawer/drawer-title"
 import { SeenChip } from "@/design-system/movie-drawer/seen-chip"
@@ -50,41 +50,8 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 						/>
 
 						<p className="mb-2 line-clamp-4">{movie.overview}</p>
-						<section className="flex gap-4 mt-6 border-t border-gray-800 pt-4">
-							{movie.type === "movie" && !!movie.watched_date ? (
-								<Button
-									intent={"secondary"}
-									className="flex-1 [&>span]:flex [&>span]:items-center [&>span]:gap-3 py-0 h-12"
-								>
-									<Icon name="eye-slash" size={20} />
-									Retirer des films vus
-								</Button>
-							) : (
-								<Button className="flex-1 [&>span]:flex [&>span]:items-center [&>span]:gap-3 py-0 h-12">
-									<Icon name="eye" size={20} />
-									Marquer comme vu
-								</Button>
-							)}
 
-							<Button
-								className="w-12 p-0"
-								intent={
-									movie.type === "movie" && !!movie.added_date
-										? "secondary"
-										: "primary"
-								}
-							>
-								<Icon
-									name={
-										movie.type === "movie" &&
-										!!movie.added_date
-											? "check"
-											: "plus"
-									}
-									size={20}
-								/>
-							</Button>
-						</section>
+						<DrawerActions movie={movie} />
 					</div>
 				</div>
 			</Drawer.Content>
