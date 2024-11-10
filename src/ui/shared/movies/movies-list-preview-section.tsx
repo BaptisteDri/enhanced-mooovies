@@ -4,7 +4,6 @@ import { CommonMovie } from "@/core/common/types/common-movie"
 import { Movie } from "@/core/movies/types/movie"
 import { PlusCircle } from "@/design-system/icons/plus-circle"
 import { MovieCard } from "@/design-system/movie-card"
-import { MovieDrawer } from "@/design-system/movie-drawer"
 import Link from "next/link"
 
 type Props = {

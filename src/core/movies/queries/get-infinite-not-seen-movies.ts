@@ -3,13 +3,16 @@ import {
 	GetMoviesResponse,
 	movies,
 } from "@/core/movies/infrastructure/movies.supabase"
+import { keepPreviousData } from "@tanstack/react-query"
 
 type Options = {
 	dto: GetMoviesDto
 }
 
+export const GET_MOVIES_NOT_SEEN_INFINITE_KEY = "GET-MOVIES-NOT-SEEN-INFINITE"
+
 export const getInfiniteNotSeenMovies = ({ dto }: Options) => ({
-	queryKey: ["GET-MOVIES-NOT-SEEN-INFINITE"],
+	queryKey: [GET_MOVIES_NOT_SEEN_INFINITE_KEY],
 	queryFn: async (params: { pageParam: GetMoviesDto }) =>
 		(await movies.get(params.pageParam)) ?? {
 			movies: [],
@@ -25,4 +28,5 @@ export const getInfiniteNotSeenMovies = ({ dto }: Options) => ({
 			offset: lastPage.movies.length > 0 ? lastPage.nextCursor : null,
 		}
 	},
+	placeholderData: keepPreviousData,
 })

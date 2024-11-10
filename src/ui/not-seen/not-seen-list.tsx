@@ -1,16 +1,21 @@
 "use client"
 
+import { CommonMovie } from "@/core/common/types/common-movie"
 import { getInfiniteNotSeenMovies } from "@/core/movies/queries/get-infinite-not-seen-movies"
+import { Movie } from "@/core/movies/types/movie"
 import { MovieCard } from "@/design-system/movie-card"
+import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 type Props = {
 	userId: string
 }
 
 export const NotSeenList = ({ userId }: Props) => {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+	const [selectedMovie, setSelectedMovie] = useState<Movie>()
 	const observerRef = useRef<HTMLDivElement>(null)
 
 	const dto = {
@@ -49,6 +54,8 @@ export const NotSeenList = ({ userId }: Props) => {
 		return () => observer.disconnect()
 	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+	console.log(data?.pages?.[0]?.movies)
+
 	return (
 		<>
 			<h1 className="text-4xl font-semibold px-4">
@@ -60,13 +67,20 @@ export const NotSeenList = ({ userId }: Props) => {
 				)}
 			</h1>
 			<section className="grid grid-cols-3 gap-4 px-4">
-				{isFetching && !isFetchingNextPage && <MoviesListSkeleton />}
+				{isFetching &&
+					!isFetchingNextPage &&
+					!data?.pages?.[0]?.movies && <MoviesListSkeleton />}
 				{data?.pages.map((page) =>
 					page.movies.map((movie, i) => (
 						<MovieCard
 							movie={{ ...movie, type: "movie" }}
 							key={i}
 							sizes="33vw"
+							setSelectedMovie={(movie) => {
+								if (movie.type === "discover") return
+								setSelectedMovie(movie)
+								setIsDrawerOpen(true)
+							}}
 						/>
 					)),
 				)}
@@ -75,6 +89,16 @@ export const NotSeenList = ({ userId }: Props) => {
 			<div ref={observerRef} className="text-center text-gray-300">
 				{!hasNextPage && "Fin de la liste 🎬"}
 			</div>
+			{selectedMovie && (
+				<MovieDrawer
+					movie={{ ...selectedMovie, type: "movie" }}
+					open={isDrawerOpen}
+					setOpen={setIsDrawerOpen}
+					setSelectedMovie={
+						setSelectedMovie as (movie?: CommonMovie) => void
+					}
+				/>
+			)}
 		</>
 	)
 }
