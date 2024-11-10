@@ -24,7 +24,11 @@ export type ToggleMovieIsSeenDto = {
 
 export const movies: {
 	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
-	toggleMovieIsSeen: ({ uuid, isSeen }: ToggleMovieIsSeenDto) => Promise<void>
+	getMovie: (uuid?: string) => Promise<Movie | undefined>
+	toggleMovieIsSeen: ({
+		uuid,
+		isSeen,
+	}: ToggleMovieIsSeenDto) => Promise<{ isSeen: boolean }>
 } = {
 	get: async ({
 		userId,
@@ -70,10 +74,27 @@ export const movies: {
 			console.error(error)
 		}
 	},
+	getMovie: async (uuid) => {
+		const { data, error } = await supabase
+			.from("films")
+			.select("*")
+			.eq("uuid", uuid)
+			.single()
+
+		if (error) throw error
+
+		return data
+	},
 	toggleMovieIsSeen: async ({ isSeen, uuid }) => {
-		await supabase
+		const { error } = await supabase
 			.from("films")
 			.update({ watched_date: isSeen ? new Date().toISOString() : null })
 			.eq("uuid", uuid)
+
+		if (error) throw error
+
+		return {
+			isSeen,
+		}
 	},
 }

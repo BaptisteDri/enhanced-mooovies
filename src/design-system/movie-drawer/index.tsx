@@ -12,21 +12,21 @@ type Props = {
 	className?: string
 	setOpen: (open: boolean) => void
 	open: boolean
-	setSelectedMovieId?: (id?: number) => void
+	setSelectedMovie?: (movie?: CommonMovie) => void
 }
 
 export const MovieDrawer = ({
 	movie,
 	open,
 	setOpen,
-	setSelectedMovieId,
+	setSelectedMovie,
 }: Props) => {
 	return (
 		<>
 			<Drawer.Root
 				open={open}
 				onOpenChange={setOpen}
-				onAnimationEnd={() => setSelectedMovieId?.(undefined)}
+				onAnimationEnd={() => setSelectedMovie?.(undefined)}
 			>
 				<Drawer.Portal>
 					<Drawer.Overlay className="fixed inset-0 bg-gray-950/50 z-20" />

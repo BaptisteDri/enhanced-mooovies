@@ -12,7 +12,7 @@ type Props = {
 	href: string
 	title: string
 	movies: Movie[]
-	setSelectedMovie: (id?: number) => void
+	setSelectedMovie: (movie?: Movie) => void
 }
 
 export const MoviesListPreviewSection = ({
@@ -24,10 +24,7 @@ export const MoviesListPreviewSection = ({
 }: Props) => {
 	return (
 		<section className="space-y-4">
-			<Link
-				href={href}
-				className="px-4 flex justify-between items-baseline"
-			>
+			<section className="px-4 flex justify-between items-baseline">
 				<h2 className="font-medium text-xl">
 					{title}
 					{typeof amount !== "undefined" && !!amount && (
@@ -36,12 +33,16 @@ export const MoviesListPreviewSection = ({
 						</span>
 					)}
 				</h2>
-				<span className="text-sm text-gray-400">voir plus</span>
-			</Link>
+				<Link href={href} className="text-sm text-gray-400">
+					voir plus
+				</Link>
+			</section>
 			<div className="flex gap-4 overflow-x-auto no-scrollbar px-4">
 				{movies.map((movie, i) => (
 					<MovieCard
-						setSelectedMovie={setSelectedMovie}
+						setSelectedMovie={
+							setSelectedMovie as (movie: CommonMovie) => void
+						}
 						movie={{ ...movie, type: "movie" }}
 						key={i}
 						className={"min-w-[33vw]"}

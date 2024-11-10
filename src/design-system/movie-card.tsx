@@ -2,12 +2,13 @@ import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { Movie } from "@/core/movies/types/movie"
 import { DiscoverMovie } from "@/core/discover/discover-movies"
+import { CommonMovie } from "@/core/common/types/common-movie"
 
 type Props = {
 	movie: ({ type: "movie" } & Movie) | ({ type: "discover" } & DiscoverMovie)
 	className?: string
 	sizes?: string
-	setSelectedMovie?: (id: number) => void
+	setSelectedMovie?: (movie: CommonMovie) => void
 }
 
 export const MovieCard = ({
@@ -24,8 +25,8 @@ export const MovieCard = ({
 			)}
 			onClick={() =>
 				movie.type === "discover"
-					? setSelectedMovie(movie.id)
-					: setSelectedMovie(movie.tmdb_id)
+					? setSelectedMovie({ ...movie, type: "discover" })
+					: setSelectedMovie({ ...movie, type: "movie" })
 			}
 		>
 			<Image

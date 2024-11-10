@@ -1,12 +1,13 @@
 "use client"
 
+import { CommonMovie } from "@/core/common/types/common-movie"
 import { getNotSeenMovies } from "@/core/movies/queries/get-not-seen-movies"
 import { getSeenMovies } from "@/core/movies/queries/get-seen-movies"
 import { Movie } from "@/core/movies/types/movie"
 import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
 import { useQuery } from "@tanstack/react-query"
-import { useEffect, useMemo, useState } from "react"
+import { useState } from "react"
 
 type Props = {
 	userId: string
@@ -14,12 +15,7 @@ type Props = {
 
 export const PreviewedMovies = ({ userId }: Props) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-	const [selectedMovieId, setSelectedMovieId] = useState<number>()
-
-	useEffect(() => {
-		if (!selectedMovieId) return setIsDrawerOpen(false)
-		setIsDrawerOpen(true)
-	}, [selectedMovieId])
+	const [selectedMovie, setSelectedMovie] = useState<Movie>()
 
 	const { data: seenMoviesData } = useQuery(
 		getSeenMovies({
@@ -42,14 +38,6 @@ export const PreviewedMovies = ({ userId }: Props) => {
 		...notSeenMoviesData,
 	}
 
-	const selectedMovie = useMemo(
-		() =>
-			[...(notSeenMovies || []), ...(seenMovies || [])].find(
-				(movie: Movie) => movie.tmdb_id === selectedMovieId,
-			),
-		[selectedMovieId, seenMovies, notSeenMovies],
-	)
-
 	return (
 		<>
 			<MoviesListPreviewSection
@@ -57,7 +45,10 @@ export const PreviewedMovies = ({ userId }: Props) => {
 				href={"/a-voir"}
 				title={"À voir"}
 				movies={notSeenMovies || []}
-				setSelectedMovie={setSelectedMovieId}
+				setSelectedMovie={(movie) => {
+					setSelectedMovie(movie)
+					setIsDrawerOpen(true)
+				}}
 			/>
 			{seenMovies && seenMovies.length > 0 && (
 				<MoviesListPreviewSection
@@ -65,7 +56,10 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					href={"/vus"}
 					title={"Vus"}
 					movies={seenMovies || []}
-					setSelectedMovie={setSelectedMovieId}
+					setSelectedMovie={(movie) => {
+						setSelectedMovie(movie)
+						setIsDrawerOpen(true)
+					}}
 				/>
 			)}
 			{selectedMovie && (
@@ -73,7 +67,9 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					movie={{ ...selectedMovie, type: "movie" }}
 					open={isDrawerOpen}
 					setOpen={setIsDrawerOpen}
-					setSelectedMovieId={setSelectedMovieId}
+					setSelectedMovie={
+						setSelectedMovie as (movie?: CommonMovie) => void
+					}
 				/>
 			)}
 		</>
