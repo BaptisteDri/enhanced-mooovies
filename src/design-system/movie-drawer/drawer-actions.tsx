@@ -1,14 +1,13 @@
-import { DiscoverMovie } from "@/core/discover/discover-movies"
+import { CommonMovie } from "@/core/common/types/common-movie"
 import { toggleMovieIsSeen } from "@/core/movies/mutations/toggle-movie-is-seen"
 import { getMovie } from "@/core/movies/queries/get-movie"
-import { Movie } from "@/core/movies/types/movie"
 import { Button } from "@/design-system/button"
 import { Icon } from "@/design-system/icons"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 
 type Props = {
-	movie: ({ type: "movie" } & Movie) | ({ type: "discover" } & DiscoverMovie)
+	movie: CommonMovie
 }
 
 export const DrawerActions = ({ movie }: Props) => {
@@ -47,6 +46,7 @@ export const DrawerActions = ({ movie }: Props) => {
 					className="flex-1 [&>span]:flex [&>span]:items-center [&>span]:gap-3 py-0 h-12"
 					onClick={setIsNotSeen}
 					loading={toggleMovieIsSeenMutation.isPending || isFetching}
+					disabled={toggleMovieIsSeenMutation.isPending || isFetching}
 				>
 					<Icon name="eye-slash" size={20} />
 					Retirer des films vus
@@ -56,6 +56,7 @@ export const DrawerActions = ({ movie }: Props) => {
 					className="flex-1 [&>span]:flex [&>span]:items-center [&>span]:gap-3 py-0 h-12"
 					onClick={setIsSeen}
 					loading={toggleMovieIsSeenMutation.isPending || isFetching}
+					disabled={toggleMovieIsSeenMutation.isPending || isFetching}
 				>
 					<Icon name="eye" size={20} />
 					Marquer comme vu

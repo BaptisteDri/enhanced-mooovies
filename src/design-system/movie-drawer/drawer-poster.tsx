@@ -1,9 +1,8 @@
-import { DiscoverMovie } from "@/core/discover/discover-movies"
-import { Movie } from "@/core/movies/types/movie"
+import { CommonMovie } from "@/core/common/types/common-movie"
 import Image from "next/image"
 
 type Props = {
-	movie: ({ type: "movie" } & Movie) | ({ type: "discover" } & DiscoverMovie)
+	movie: CommonMovie
 }
 
 export const DrawerPoster = ({ movie }: Props) => {

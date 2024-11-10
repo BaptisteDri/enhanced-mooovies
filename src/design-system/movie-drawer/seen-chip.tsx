@@ -1,25 +1,46 @@
-import { DiscoverMovie } from "@/core/discover/discover-movies"
-import { Movie } from "@/core/movies/types/movie"
+import { CommonMovie } from "@/core/common/types/common-movie"
+import { getMovie } from "@/core/movies/queries/get-movie"
 import { Icon } from "@/design-system/icons"
+import { useQuery } from "@tanstack/react-query"
+import { useMemo } from "react"
+import { twMerge } from "tailwind-merge"
 
 type Props = {
-	movie: ({ type: "movie" } & Movie) | ({ type: "discover" } & DiscoverMovie)
+	movie: CommonMovie
 }
 
 export const SeenChip = ({ movie }: Props) => {
-	if (!(movie.type === "movie" && !!movie.watched_date)) return <></>
-
-	const formattedDate = new Date(movie.watched_date).toLocaleDateString(
-		"fr-FR",
-		{
-			day: "numeric",
-			month: "long",
-			year: "numeric",
-		},
+	const { data: fetchedMovie } = useQuery(
+		getMovie({
+			uuid: movie.type === "movie" ? movie.uuid : undefined,
+		}),
 	)
 
+	const isSeen = useMemo(() => {
+		if (!fetchedMovie) return movie.type === "movie" && !!movie.watched_date
+		return !!fetchedMovie.watched_date
+	}, [fetchedMovie, movie])
+
+	if (movie.type === "discover") return <></>
+
+	const formattedDate = new Date(
+		fetchedMovie?.watched_date || movie.watched_date,
+	).toLocaleDateString("fr-FR", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	})
+
 	return (
-		<p className="mb-4 border w-fit px-3 py-1.5 text-sm border-indigo-500 rounded-md bg-gradient-to-br from-indigo-950 to-indigo-900 flex items-center gap-2 relative z-10">
+		<p
+			className={twMerge(
+				"mb-4 border h-[2.125rem] w-fit px-3 py-0 text-sm border-indigo-500 rounded-md bg-gradient-to-br from-indigo-950 to-indigo-900 flex items-center gap-2 relative z-10",
+				"transition-all duration-300",
+				isSeen
+					? "max-h-[2.125rem]"
+					: "max-h-0 overflow-hidden mb-0  opacity-0 scale-0",
+			)}
+		>
 			<Icon name="eye" size={12} />
 			Vu le {formattedDate}
 		</p>
