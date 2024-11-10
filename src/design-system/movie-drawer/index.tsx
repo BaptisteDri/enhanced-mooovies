@@ -2,6 +2,9 @@ import { DiscoverMovie } from "@/core/discover/discover-movies"
 import { Movie } from "@/core/movies/types/movie"
 import { Button } from "@/design-system/button"
 import { Icon } from "@/design-system/icons"
+import { DrawerPoster } from "@/design-system/movie-drawer/drawer-poster"
+import { DrawerTitle } from "@/design-system/movie-drawer/drawer-title"
+import { SeenChip } from "@/design-system/movie-drawer/seen-chip"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { Drawer } from "vaul"
@@ -38,50 +41,13 @@ export const MovieDrawer = ({ movie, className }: Props) => (
 			>
 				<div className="bg-gray-900 rounded-t-[10px] flex-1 overflow-hidden">
 					<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-700 mt-5" />
-
 					<div className="max-w-md mx-auto p-4">
-						<section className="relative aspect-[2/3] flex bg-gray-900 w-32 mb-6">
-							<Image
-								src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
-								alt={`${movie.title} poster`}
-								fill
-								className="object-cover object-top blur-3xl"
-								sizes="128px"
-							/>
-							<Image
-								src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
-								alt={`${movie.title} poster`}
-								fill
-								className="object-cover object-top rounded-md"
-								sizes="128px"
-							/>
-						</section>
-						{movie.type === "movie" && !!movie.watched_date && (
-							<p className="mb-4 border w-fit px-3 py-1.5 text-sm border-indigo-500 rounded-md bg-gradient-to-br from-indigo-950 to-indigo-900 flex items-center gap-2">
-								<Icon name="eye" size={12} />
-								Vu le{" "}
-								{new Date(
-									movie.watched_date,
-								).toLocaleDateString("fr-FR", {
-									day: "numeric",
-									month: "long",
-									year: "numeric",
-								})}
-							</p>
-						)}
-						<Drawer.Title className="font-medium mb-4" asChild>
-							<h2 className="text-2xl font-semibold">
-								{movie.title}
-								{movie.title !== movie.original_title && (
-									<>
-										<br />
-										<span className="text-base text-gray-400 font-normal italic">
-											{movie.original_title}
-										</span>
-									</>
-								)}
-							</h2>
-						</Drawer.Title>
+						<DrawerPoster movie={movie} />
+						<SeenChip movie={movie} />
+						<DrawerTitle
+							original_title={movie.original_title}
+							title={movie.title}
+						/>
 
 						<p className="mb-2 line-clamp-4">{movie.overview}</p>
 						<section className="flex gap-4 mt-6 border-t border-gray-800 pt-4">
