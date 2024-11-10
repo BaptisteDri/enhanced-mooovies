@@ -19,7 +19,7 @@ export const SeenChip = ({ movie }: Props) => {
 	)
 
 	return (
-		<p className="mb-4 border w-fit px-3 py-1.5 text-sm border-indigo-500 rounded-md bg-gradient-to-br from-indigo-950 to-indigo-900 flex items-center gap-2">
+		<p className="mb-4 border w-fit px-3 py-1.5 text-sm border-indigo-500 rounded-md bg-gradient-to-br from-indigo-950 to-indigo-900 flex items-center gap-2 relative z-10">
 			<Icon name="eye" size={12} />
 			Vu le {formattedDate}
 		</p>
