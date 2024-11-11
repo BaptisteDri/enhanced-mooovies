@@ -21,6 +21,7 @@ export const Menu = () => {
 			<Link
 				href="/"
 				className={twMerge(
+					"w-full h-full grid place-items-center",
 					pathname === "/" ? "text-gray-50" : "text-gray-400",
 				)}
 			>
@@ -33,6 +34,7 @@ export const Menu = () => {
 			<Link
 				href="/recherche"
 				className={twMerge(
+					"w-full h-full grid place-items-center",
 					pathname === "/recherche"
 						? "text-gray-50"
 						: "text-gray-400",
@@ -43,6 +45,7 @@ export const Menu = () => {
 			<Link
 				href="/profil"
 				className={twMerge(
+					"w-full h-full grid place-items-center",
 					pathname === "/profil" ? "text-gray-50" : "text-gray-400",
 				)}
 			>
