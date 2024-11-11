@@ -4,10 +4,14 @@ import { CommonMovie } from "@/core/common/types/common-movie"
 import { getNotSeenMovies } from "@/core/movies/queries/get-not-seen-movies"
 import { getSeenMovies } from "@/core/movies/queries/get-seen-movies"
 import { Movie } from "@/core/movies/types/movie"
-import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
 import { useQuery } from "@tanstack/react-query"
+import dynamic from "next/dynamic"
 import { useState } from "react"
+
+const MovieDrawer = dynamic(() =>
+	import("@/design-system/movie-drawer").then((mod) => mod.MovieDrawer),
+)
 
 type Props = {
 	userId: string
