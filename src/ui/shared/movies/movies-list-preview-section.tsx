@@ -2,7 +2,7 @@
 
 import { CommonMovie } from "@/core/common/types/common-movie"
 import { Movie } from "@/core/movies/types/movie"
-import { PlusCircle } from "@/design-system/icons/plus-circle"
+import { Icon } from "@/design-system/icons"
 import { MovieCard } from "@/design-system/movie-card"
 import Link from "next/link"
 
@@ -52,7 +52,7 @@ export const MoviesListPreviewSection = ({
 						href="/recherche"
 						className="rounded-md aspect-[2/3] bg-gray-900 min-w-[33vw] flex items-center justify-center flex-col gap-2 text-sm text-gray-300"
 					>
-						<PlusCircle size={24} />
+						<Icon name="plus-circle" size={24} />
 						Ajouter un film
 					</Link>
 				)}

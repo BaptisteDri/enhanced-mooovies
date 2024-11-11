@@ -63,14 +63,7 @@ export const DrawerActions = ({ movie }: Props) => {
 				</Button>
 			)}
 
-			<Button
-				className="w-12 p-0"
-				intent={
-					movie.type === "movie" && !!movie.added_date
-						? "secondary"
-						: "primary"
-				}
-			>
+			<Button className="w-12 p-0" intent={"secondary"}>
 				<Icon
 					name={
 						movie.type === "movie" && !!movie.added_date

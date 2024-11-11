@@ -6,6 +6,7 @@ import { Home } from "@/design-system/icons/home"
 import { LockClosed } from "@/design-system/icons/lock-closed"
 import { MagnifyingGlass } from "@/design-system/icons/magnifying-glass"
 import { Plus } from "@/design-system/icons/plus"
+import { PlusCircle } from "@/design-system/icons/plus-circle"
 import { UserCircle } from "@/design-system/icons/user-circle"
 import { XMark } from "@/design-system/icons/x-mark"
 
@@ -20,6 +21,7 @@ const ICONS = {
 	check: Check,
 	plus: Plus,
 	"x-mark": XMark,
+	"plus-circle": PlusCircle,
 } as const
 
 export type IconName = keyof typeof ICONS
