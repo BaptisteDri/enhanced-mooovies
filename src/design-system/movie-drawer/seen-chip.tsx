@@ -2,7 +2,7 @@ import { CommonMovie } from "@/core/common/types/common-movie"
 import { getMovie } from "@/core/movies/queries/get-movie"
 import { Icon } from "@/design-system/icons"
 import { useQuery } from "@tanstack/react-query"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
 }
 
 export const SeenChip = ({ movie }: Props) => {
+	const [lastSeenDate, setLastSeenDate] = useState<string>()
+
 	const { data: fetchedMovie } = useQuery(
 		getMovie({
 			uuid: movie.type === "movie" ? movie.uuid : undefined,
@@ -23,9 +25,17 @@ export const SeenChip = ({ movie }: Props) => {
 
 	if (movie.type === "discover") return <></>
 
-	const formattedDate = new Date(
-		fetchedMovie?.watched_date || movie.watched_date,
-	).toLocaleDateString("fr-FR", {
+	const date = useMemo(
+		() => lastSeenDate || fetchedMovie?.watched_date || movie.watched_date,
+		[fetchedMovie, movie],
+	)
+
+	useEffect(() => {
+		if (!fetchedMovie?.watched_date) return
+		setLastSeenDate(date)
+	}, [fetchedMovie, movie])
+
+	const formattedDate = new Date(date).toLocaleDateString("fr-FR", {
 		day: "numeric",
 		month: "long",
 		year: "numeric",
