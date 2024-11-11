@@ -1,4 +1,4 @@
-import { DiscoverMovie } from "@/core/discover/discover-movies"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { MovieCard } from "@/design-system/movie-card"
 import { twMerge } from "tailwind-merge"
 

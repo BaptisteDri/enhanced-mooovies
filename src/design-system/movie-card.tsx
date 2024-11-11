@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { Movie } from "@/core/movies/types/movie"
-import { DiscoverMovie } from "@/core/discover/discover-movies"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { CommonMovie } from "@/core/common/types/common-movie"
 
 type Props = {

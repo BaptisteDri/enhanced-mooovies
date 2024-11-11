@@ -1,7 +1,8 @@
-import { DiscoverMovie } from "@/core/discover/discover-movies"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { Marquee } from "@/ui/shared/auth/marquee"
 
 export const AnimatedMovies = async () => {
+	// @TODO: use a query to fetch the data
 	const staticData: any = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/movie/popular`,
 		{
