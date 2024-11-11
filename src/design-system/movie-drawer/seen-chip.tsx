@@ -23,10 +23,11 @@ export const SeenChip = ({ movie }: Props) => {
 		return !!fetchedMovie.watched_date
 	}, [fetchedMovie, movie])
 
-	if (movie.type === "discover") return <></>
-
 	const date = useMemo(
-		() => lastSeenDate || fetchedMovie?.watched_date || movie.watched_date,
+		() =>
+			lastSeenDate ||
+			fetchedMovie?.watched_date ||
+			(movie.type === "movie" ? movie.watched_date : ""),
 		[fetchedMovie, movie],
 	)
 
@@ -34,6 +35,8 @@ export const SeenChip = ({ movie }: Props) => {
 		if (!fetchedMovie?.watched_date) return
 		setLastSeenDate(date)
 	}, [fetchedMovie, movie])
+
+	if (movie.type === "discover") return <></>
 
 	const formattedDate = new Date(date).toLocaleDateString("fr-FR", {
 		day: "numeric",
