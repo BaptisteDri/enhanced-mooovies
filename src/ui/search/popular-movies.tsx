@@ -1,12 +1,17 @@
 "use client"
 
+import { CommonMovie } from "@/core/common/types/common-movie"
 import { getInfinitePopularMovies } from "@/core/discover/queries/get-infinite-popular-movies"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { MovieCard } from "@/design-system/movie-card"
+import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export const PopularMovies = () => {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+	const [selectedMovie, setSelectedMovie] = useState<DiscoverMovie>()
 	const observerRef = useRef<HTMLDivElement>(null)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
@@ -51,11 +56,11 @@ export const PopularMovies = () => {
 							movie={{ ...movie, type: "discover" }}
 							key={i}
 							sizes="33vw"
-							// setSelectedMovie={(movie) => {
-							// 	if (movie.type === "discover") return
-							// 	setSelectedMovie(movie)
-							// 	setIsDrawerOpen(true)
-							// }}
+							setSelectedMovie={(movie) => {
+								if (movie.type === "movie") return
+								setSelectedMovie(movie)
+								setIsDrawerOpen(true)
+							}}
 						/>
 					)),
 				)}
@@ -64,6 +69,16 @@ export const PopularMovies = () => {
 			<div ref={observerRef} className="text-center text-gray-300">
 				{!hasNextPage && "Fin de la liste 🎬"}
 			</div>
+			{selectedMovie && (
+				<MovieDrawer
+					movie={{ ...selectedMovie, type: "discover" }}
+					open={isDrawerOpen}
+					setOpen={setIsDrawerOpen}
+					setSelectedMovie={
+						setSelectedMovie as (movie?: CommonMovie) => void
+					}
+				/>
+			)}
 		</>
 	)
 }
