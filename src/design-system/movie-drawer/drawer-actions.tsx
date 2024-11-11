@@ -39,7 +39,7 @@ export const DrawerActions = ({ movie }: Props) => {
 	}, [fetchedMovie, movie])
 
 	return (
-		<section className="flex gap-4 mt-6 border-t border-gray-800 pt-4">
+		<section className="flex gap-4 mt-6 border-t border-gray-800 pt-4 pb-6">
 			{(fetchedMovie && !!fetchedMovie.watched_date) || isSeen ? (
 				<Button
 					intent={"secondary"}
