@@ -6,6 +6,7 @@ import { DrawerCategories } from "@/design-system/movie-drawer/drawer-categories
 import { DrawerPoster } from "@/design-system/movie-drawer/drawer-poster"
 import { DrawerTitle } from "@/design-system/movie-drawer/drawer-title"
 import { SeenChip } from "@/design-system/movie-drawer/seen-chip"
+import { useMemo } from "react"
 import { Drawer } from "vaul"
 
 type Props = {
@@ -22,6 +23,11 @@ export const MovieDrawer = ({
 	setOpen,
 	setSelectedMovie,
 }: Props) => {
+	const year = useMemo(() => {
+		if (movie.type === "movie") return movie.year
+		if (movie.type === "discover") return movie.release_date?.split("-")[0]
+	}, [movie])
+
 	return (
 		<>
 			<Drawer.Root
@@ -40,10 +46,11 @@ export const MovieDrawer = ({
 								<DrawerTitle
 									original_title={movie.original_title}
 									title={movie.title}
+									year={year}
 								/>
 								<DrawerCategories movie={movie} />
 
-								<p className="mb-2 line-clamp-4 text-gray-400">
+								<p className="mb-2 line-clamp-4 text-gray-400 text-sm">
 									{movie.overview}
 								</p>
 
