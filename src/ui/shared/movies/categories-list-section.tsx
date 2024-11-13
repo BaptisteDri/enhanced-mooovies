@@ -2,7 +2,7 @@ import Link from "next/link"
 import { categories } from "@/core/categories/categories"
 import { twMerge } from "tailwind-merge"
 
-const categoriesColor: Record<number, string> = {
+export const categoriesColor: Record<number, string> = {
 	28: "to-red-700/30",
 	12: "to-amber-700/30",
 	16: "to-yellow-700/30",
