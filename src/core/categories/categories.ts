@@ -98,7 +98,7 @@ export const categories: Category[] = [
 	},
 	{
 		id: 10770,
-		name: "TV Movie",
+		name: "Téléfilm",
 		icon: "📺",
 		color: "#3b757f",
 	},
