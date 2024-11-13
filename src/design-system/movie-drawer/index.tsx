@@ -43,7 +43,7 @@ export const MovieDrawer = ({
 								/>
 								<DrawerCategories movie={movie} />
 
-								<p className="mb-2 line-clamp-4">
+								<p className="mb-2 line-clamp-4 text-gray-400">
 									{movie.overview}
 								</p>
 
