@@ -53,6 +53,9 @@ export const SeenChip = ({ movie }: Props) => {
 					? "max-h-[2.125rem]"
 					: "max-h-0 overflow-hidden mb-0  opacity-0 scale-0",
 			)}
+			style={{
+				transform: "translateZ(0)",
+			}}
 		>
 			<Icon name="eye" size={12} />
 			Vu le {formattedDate}
