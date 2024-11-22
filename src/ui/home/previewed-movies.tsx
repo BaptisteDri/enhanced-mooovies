@@ -74,6 +74,7 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					setSelectedMovie={
 						setSelectedMovie as (movie?: CommonMovie) => void
 					}
+					userId={userId}
 				/>
 			)}
 		</>

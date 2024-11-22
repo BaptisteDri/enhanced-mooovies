@@ -22,9 +22,14 @@ export type ToggleMovieIsSeenDto = {
 	isSeen: boolean
 } & Pick<Movie, "uuid">
 
+export type GetMovieDto = {
+	tmdb_id: number
+	userId: string
+}
+
 export const movies: {
 	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
-	getMovie: (uuid?: string) => Promise<Movie | undefined>
+	getMovie: (dto: GetMovieDto) => Promise<Movie | undefined>
 	toggleMovieIsSeen: ({
 		uuid,
 		isSeen,
@@ -74,11 +79,12 @@ export const movies: {
 			console.error(error)
 		}
 	},
-	getMovie: async (uuid) => {
+	getMovie: async ({ tmdb_id, userId }) => {
 		const { data, error } = await supabase
 			.from("films")
 			.select("*")
-			.eq("uuid", uuid)
+			.eq("tmdb_id", tmdb_id)
+			.eq("user_id", userId)
 			.single()
 
 		if (error) throw error

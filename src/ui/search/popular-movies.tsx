@@ -9,7 +9,11 @@ import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useEffect, useRef, useState } from "react"
 
-export const PopularMovies = () => {
+type Props = {
+	userId: string
+}
+
+export const PopularMovies = ({ userId }: Props) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const [selectedMovie, setSelectedMovie] = useState<DiscoverMovie>()
 	const observerRef = useRef<HTMLDivElement>(null)
@@ -77,6 +81,7 @@ export const PopularMovies = () => {
 					setSelectedMovie={
 						setSelectedMovie as (movie?: CommonMovie) => void
 					}
+					userId={userId}
 				/>
 			)}
 		</>

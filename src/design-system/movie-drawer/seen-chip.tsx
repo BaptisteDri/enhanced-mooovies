@@ -7,14 +7,18 @@ import { twMerge } from "tailwind-merge"
 
 type Props = {
 	movie: CommonMovie
+	userId: string
 }
 
-export const SeenChip = ({ movie }: Props) => {
+export const SeenChip = ({ movie, userId }: Props) => {
 	const [lastSeenDate, setLastSeenDate] = useState<string>()
 
 	const { data: fetchedMovie } = useQuery(
 		getMovie({
-			uuid: movie.type === "movie" ? movie.uuid : undefined,
+			tmdb_id: movie.type === "movie" ? movie.tmdb_id : movie.id,
+			userId,
+			enabled: true,
+			retry: false,
 		}),
 	)
 
@@ -35,8 +39,6 @@ export const SeenChip = ({ movie }: Props) => {
 		if (!fetchedMovie?.watched_date) return
 		setLastSeenDate(date)
 	}, [fetchedMovie, movie])
-
-	if (movie.type === "discover") return <></>
 
 	const formattedDate = new Date(date).toLocaleDateString("fr-FR", {
 		day: "numeric",

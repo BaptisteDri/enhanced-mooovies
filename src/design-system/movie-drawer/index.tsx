@@ -11,10 +11,10 @@ import { Drawer } from "vaul"
 
 type Props = {
 	movie: CommonMovie
-	className?: string
 	setOpen: (open: boolean) => void
 	open: boolean
 	setSelectedMovie?: (movie?: CommonMovie) => void
+	userId: string
 }
 
 export const MovieDrawer = ({
@@ -22,6 +22,7 @@ export const MovieDrawer = ({
 	open,
 	setOpen,
 	setSelectedMovie,
+	userId,
 }: Props) => {
 	const year = useMemo(() => {
 		if (movie.type === "movie") return movie.year
@@ -42,7 +43,7 @@ export const MovieDrawer = ({
 							<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-700 mt-5" />
 							<div className="max-w-md mx-auto p-4">
 								<DrawerPoster movie={movie} />
-								<SeenChip movie={movie} />
+								<SeenChip movie={movie} userId={userId} />
 								<DrawerTitle
 									original_title={movie.original_title}
 									title={movie.title}
@@ -54,7 +55,7 @@ export const MovieDrawer = ({
 									{movie.overview}
 								</p>
 
-								<DrawerActions movie={movie} />
+								<DrawerActions movie={movie} userId={userId} />
 							</div>
 						</div>
 					</Drawer.Content>

@@ -95,6 +95,7 @@ export const NotSeenList = ({ userId }: Props) => {
 					setSelectedMovie={
 						setSelectedMovie as (movie?: CommonMovie) => void
 					}
+					userId={userId}
 				/>
 			)}
 		</>
