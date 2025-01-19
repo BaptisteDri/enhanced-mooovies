@@ -1,4 +1,4 @@
-import { CommonMovie } from "@/core/common/types/common-movie"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { getMovie } from "@/core/movies/queries/get-movie"
 import { Icon } from "@/design-system/icons"
 import { useQuery } from "@tanstack/react-query"
@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
 type Props = {
-	movie: CommonMovie
+	movie: DiscoverMovie
 	userId: string
 }
 
@@ -15,7 +15,7 @@ export const SeenChip = ({ movie, userId }: Props) => {
 
 	const { data: fetchedMovie } = useQuery(
 		getMovie({
-			tmdb_id: movie.type === "movie" ? movie.tmdb_id : movie.id,
+			tmdb_id: movie.id,
 			userId,
 			enabled: true,
 			retry: false,
@@ -23,28 +23,23 @@ export const SeenChip = ({ movie, userId }: Props) => {
 	)
 
 	const isSeen = useMemo(() => {
-		if (!fetchedMovie) return movie.type === "movie" && !!movie.watched_date
-		return !!fetchedMovie.watched_date
+		return !!fetchedMovie?.watched_date
 	}, [fetchedMovie, movie])
 
-	const date = useMemo(
-		() =>
-			lastSeenDate ||
-			fetchedMovie?.watched_date ||
-			(movie.type === "movie" ? movie.watched_date : ""),
-		[fetchedMovie, movie],
-	)
+	const date = lastSeenDate || fetchedMovie?.watched_date
 
 	useEffect(() => {
-		if (!fetchedMovie?.watched_date) return
+		if (!fetchedMovie?.watched_date || !date) return
 		setLastSeenDate(date)
 	}, [fetchedMovie, movie])
 
-	const formattedDate = new Date(date).toLocaleDateString("fr-FR", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-	})
+	const formattedDate =
+		date &&
+		new Date(date).toLocaleDateString("fr-FR", {
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+		})
 
 	return (
 		<p
@@ -53,7 +48,7 @@ export const SeenChip = ({ movie, userId }: Props) => {
 				"transition-all duration-300",
 				isSeen
 					? "max-h-[2.125rem]"
-					: "max-h-0 overflow-hidden mb-0  opacity-0 scale-0",
+					: "max-h-0 overflow-hidden mb-0  opacity-0 scale-0 p-0",
 			)}
 			style={{
 				transform: "translateZ(0)",

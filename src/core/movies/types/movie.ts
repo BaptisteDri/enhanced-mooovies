@@ -9,7 +9,8 @@ export type Movie = {
 	original_title: string
 	original_language: string
 	overview: string
-	watched_date: string // @TODO: better typing
+	watched_date: string | null // @TODO: better typing
 	tmdb_id: number
-	added_date: string // @TODO: better typing
+	added_date: string | null // @TODO: better typing
+	user_id: string
 }

@@ -1,4 +1,7 @@
 import { CommonMovie } from "@/core/common/types/common-movie"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
+import { addMovie } from "@/core/movies/mutations/add-movie"
+import { deleteMovie } from "@/core/movies/mutations/delete-movie"
 import { toggleMovieIsSeen } from "@/core/movies/mutations/toggle-movie-is-seen"
 import { getMovie } from "@/core/movies/queries/get-movie"
 import { Button } from "@/design-system/button"
@@ -7,15 +10,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useMemo } from "react"
 
 type Props = {
-	movie: CommonMovie
+	movie: DiscoverMovie
 	userId: string
+	setSelectedMovie?: (movie?: CommonMovie) => void
 }
 
-export const DrawerActions = ({ movie, userId }: Props) => {
+export const DrawerActions = ({ movie, userId, setSelectedMovie }: Props) => {
 	const queryClient = useQueryClient()
 	const { data: fetchedMovie, isFetching } = useQuery(
 		getMovie({
-			tmdb_id: movie.type === "movie" ? movie.tmdb_id : movie.id,
+			tmdb_id: movie.id,
 			userId,
 			enabled: true,
 			retry: false,
@@ -26,40 +30,50 @@ export const DrawerActions = ({ movie, userId }: Props) => {
 		toggleMovieIsSeen({ queryClient }),
 	)
 
+	const addMovieMutation = useMutation(addMovie({ queryClient }))
+
+	const deleteMovieMutation = useMutation(
+		deleteMovie({
+			queryClient,
+		}),
+	)
+
 	const setIsSeen = () => {
-		if (movie.type === "discover" && !fetchedMovie) return // @TODO: add to list then mark as seen
+		if (!fetchedMovie) return addToList(true)
 
-		if (movie.type === "discover" && !!fetchedMovie)
-			return toggleMovieIsSeenMutation.mutate({
-				isSeen: true,
-				uuid: fetchedMovie.uuid,
-			})
-
-		if (movie.type === "movie")
-			return toggleMovieIsSeenMutation.mutate({
-				isSeen: true,
-				uuid: movie.uuid,
-			})
+		return toggleMovieIsSeenMutation.mutate({
+			isSeen: true,
+			uuid: fetchedMovie.uuid,
+		})
 	}
 
 	const setIsNotSeen = () => {
-		if (movie.type === "discover" && !!fetchedMovie)
-			return toggleMovieIsSeenMutation.mutate({
-				isSeen: false,
-				uuid: fetchedMovie.uuid,
-			})
-
-		if (movie.type === "movie")
-			return toggleMovieIsSeenMutation.mutate({
-				isSeen: false,
-				uuid: movie.uuid,
-			})
+		if (!fetchedMovie) return
+		toggleMovieIsSeenMutation.mutate({
+			isSeen: false,
+			uuid: fetchedMovie.uuid,
+		})
 	}
 
-	const isSeen = useMemo(() => {
-		if (!fetchedMovie) return movie.type === "movie" && !!movie.watched_date
-		return !!fetchedMovie.watched_date
-	}, [fetchedMovie, movie])
+	const addToList = (isSeen: boolean) => {
+		// const movieToAdd: AddMovieDto = {
+		// 	// director: movie.director,
+		// 	director: "",
+		// 	genre_ids: movie.genre_ids.join(", "),
+		// 	original_language: movie.original_language,
+		// 	original_title: movie.original_title,
+		// 	overview: movie.overview,
+		// 	poster: movie.poster_path,
+		// 	title: movie.title,
+		// 	tmdb_id: movie.id,
+		// 	user_id: userId,
+		// 	watched_date: isSeen ? new Date().toISOString() : null,
+		// 	year: new Date(movie.release_date).getFullYear().toString(),
+		// }
+		// addMovieMutation.mutate(movieToAdd)
+	}
+
+	const isSeen = false
 
 	return (
 		<section className="flex gap-4 mt-6 border-t border-gray-800 pt-4 pb-6">
@@ -106,16 +120,7 @@ export const DrawerActions = ({ movie, userId }: Props) => {
 					)}
 
 					<Button className="w-12 p-0" intent={"secondary"}>
-						<Icon
-							name={
-								(movie.type === "movie" &&
-									!!movie.added_date) ||
-								!!fetchedMovie
-									? "check"
-									: "plus"
-							}
-							size={20}
-						/>
+						<Icon name={true ? "check" : "plus"} size={20} />
 					</Button>
 				</>
 			)}

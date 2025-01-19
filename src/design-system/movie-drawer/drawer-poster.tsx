@@ -1,12 +1,12 @@
 "use client"
 
-import { CommonMovie } from "@/core/common/types/common-movie"
+import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { twMerge } from "tailwind-merge"
 
 type Props = {
-	movie: CommonMovie
+	movie: DiscoverMovie
 }
 
 export const DrawerPoster = ({ movie }: Props) => {
@@ -24,7 +24,7 @@ export const DrawerPoster = ({ movie }: Props) => {
 			)}
 		>
 			<Image
-				src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
+				src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
 				alt={`${movie.title} poster`}
 				fill
 				className={twMerge(
@@ -38,7 +38,7 @@ export const DrawerPoster = ({ movie }: Props) => {
 				}}
 			/>
 			<Image
-				src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
+				src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
 				alt={`${movie.title} poster`}
 				fill
 				className={twMerge(

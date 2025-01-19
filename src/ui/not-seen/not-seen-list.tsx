@@ -89,7 +89,7 @@ export const NotSeenList = ({ userId }: Props) => {
 			</div>
 			{selectedMovie && (
 				<MovieDrawer
-					movie={{ ...selectedMovie, type: "movie" }}
+					id={selectedMovie.tmdb_id}
 					open={isDrawerOpen}
 					setOpen={setIsDrawerOpen}
 					setSelectedMovie={

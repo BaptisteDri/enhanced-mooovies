@@ -27,6 +27,8 @@ export type GetMovieDto = {
 	userId: string
 }
 
+export type AddMovieDto = Omit<Movie, "uuid" | "added_date">
+
 export const movies: {
 	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
 	getMovie: (dto: GetMovieDto) => Promise<Movie | undefined>
@@ -34,6 +36,8 @@ export const movies: {
 		uuid,
 		isSeen,
 	}: ToggleMovieIsSeenDto) => Promise<{ isSeen: boolean }>
+	addMovie: (movie: AddMovieDto) => Promise<void>
+	deleteMovie: (uuid: string) => Promise<void>
 } = {
 	get: async ({
 		userId,
@@ -102,5 +106,12 @@ export const movies: {
 		return {
 			isSeen,
 		}
+	},
+	addMovie: async (movie) => {
+		await supabase.from("films").insert({ ...movie, uuid: undefined })
+	},
+
+	deleteMovie: async (uuid) => {
+		await supabase.from("films").delete().eq("uuid", uuid)
 	},
 }
