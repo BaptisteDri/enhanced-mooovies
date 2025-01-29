@@ -72,7 +72,6 @@ export const MovieDrawer = ({
 										<DrawerActions
 											movie={movie}
 											userId={userId}
-											setSelectedMovie={setSelectedMovie}
 										/>
 									</>
 								)}

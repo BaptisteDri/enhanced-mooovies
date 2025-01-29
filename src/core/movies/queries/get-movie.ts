@@ -2,6 +2,7 @@ import {
 	GetMovieDto,
 	movies,
 } from "@/core/movies/infrastructure/movies.supabase"
+import { keepPreviousData } from "@tanstack/react-query"
 
 type Options = {
 	enabled?: boolean
@@ -15,4 +16,5 @@ export const getMovie = ({ enabled = false, retry, ...dto }: Options) => ({
 	queryFn: async () => await movies.getMovie(dto),
 	enabled,
 	retry,
+	keepPreviousData: keepPreviousData,
 })

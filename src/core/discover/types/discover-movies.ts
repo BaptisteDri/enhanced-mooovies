@@ -15,3 +15,18 @@ export type DiscoverMovie = {
 	release_date: `${string}-${string}-${string}`
 	title: string
 }
+
+type Crew = {
+	id: number
+	name: string
+	original_name: string
+	profile_path: string
+	character: string
+	job: "Director" | "Producer" | "Editor" | unknown
+}
+
+export type Credits = {
+	id: number
+	cast: Omit<Crew, "job">[]
+	crew: Crew[]
+}

@@ -89,7 +89,7 @@ export const movies: {
 			.select("*")
 			.eq("tmdb_id", tmdb_id)
 			.eq("user_id", userId)
-			.single()
+			.maybeSingle()
 
 		if (error) throw error
 
