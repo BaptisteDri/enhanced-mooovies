@@ -16,8 +16,26 @@ export const MovieCard = ({
 	className,
 	setSelectedMovie,
 	sizes = "300px",
-}: Props) =>
-	!!setSelectedMovie ? (
+}: Props) => {
+	const posterPath =
+		movie.type === "discover" ? movie.poster_path : movie.poster
+
+	if (!posterPath) {
+		return (
+			<div
+				className={twMerge(
+					"relative overflow-hidden rounded-md aspect-[2/3] flex bg-gray-900 items-center justify-center",
+					className,
+				)}
+			>
+				<span className="text-gray-500 text-xs text-center px-2">
+					Image non disponible
+				</span>
+			</div>
+		)
+	}
+
+	return !!setSelectedMovie ? (
 		<button
 			className={twMerge(
 				"relative overflow-hidden rounded-md aspect-[2/3] flex bg-gray-900",
@@ -30,7 +48,7 @@ export const MovieCard = ({
 			}
 		>
 			<Image
-				src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
+				src={`https://image.tmdb.org/t/p/w342/${posterPath}`}
 				alt={`${movie.title} poster`}
 				fill
 				className="object-cover object-center"
@@ -46,7 +64,7 @@ export const MovieCard = ({
 			)}
 		>
 			<Image
-				src={`https://image.tmdb.org/t/p/w342/${movie.type === "discover" ? movie.poster_path : movie.poster}`}
+				src={`https://image.tmdb.org/t/p/w342/${posterPath}`}
 				alt={`${movie.title} poster`}
 				fill
 				className="object-cover object-center"
@@ -55,3 +73,4 @@ export const MovieCard = ({
 			/>
 		</div>
 	)
+}

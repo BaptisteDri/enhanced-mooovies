@@ -14,6 +14,16 @@ export const DrawerPoster = ({ movie }: Props) => {
 	const [isBackgroundImageLoaded, setIsBackgroundImageLoaded] =
 		useState<boolean>(false)
 
+	if (!movie.poster_path) {
+		return (
+			<section className="relative aspect-[2/3] w-32 mb-6 bg-gray-800 rounded-md flex items-center justify-center">
+				<span className="text-gray-500 text-xs text-center px-2">
+					Image non disponible
+				</span>
+			</section>
+		)
+	}
+
 	return (
 		<section
 			className={twMerge(

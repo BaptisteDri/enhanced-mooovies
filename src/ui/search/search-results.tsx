@@ -1,8 +1,8 @@
 "use client"
 
 import { CommonMovie } from "@/core/common/types/common-movie"
-import { GetDiscoverMoviesResponse } from "@/core/discover/infrastructure/discover-movies.api"
-import { getInfinitePopularMovies } from "@/core/discover/queries/get-infinite-popular-movies"
+import { SearchMoviesResponse } from "@/core/discover/infrastructure/discover-movies.api"
+import { getInfiniteSearchMovies } from "@/core/discover/queries/get-infinite-search-movies"
 import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { MovieCard } from "@/design-system/movie-card"
 import { MovieDrawer } from "@/design-system/movie-drawer"
@@ -10,15 +10,17 @@ import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useEffect, useRef, useState } from "react"
 
-type Props = { userId: string }
+type Props = { userId: string; searchQuery: string }
 
-export const PopularMovies = ({ userId }: Props) => {
+export const SearchResults = ({ userId, searchQuery }: Props) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const [selectedMovie, setSelectedMovie] = useState<DiscoverMovie>()
 	const observerRef = useRef<HTMLDivElement>(null)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-		useInfiniteQuery<GetDiscoverMoviesResponse>(getInfinitePopularMovies())
+		useInfiniteQuery<SearchMoviesResponse>(
+			getInfiniteSearchMovies(searchQuery),
+		)
 
 	useEffect(() => {
 		if (!hasNextPage || isFetchingNextPage) return
@@ -43,16 +45,20 @@ export const PopularMovies = ({ userId }: Props) => {
 		return () => observer.disconnect()
 	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+	if (!searchQuery) return null
+
 	return (
 		<>
-			<h1 className="text-4xl font-semibold px-4">Films populaires</h1>
+			<h1 className="text-4xl font-semibold px-4">
+				Résultats de recherche pour "{searchQuery}"
+			</h1>
 			<section className="grid grid-cols-3 gap-4 px-4">
 				{isFetching &&
 					!isFetchingNextPage &&
 					!data?.pages?.[0]?.discoverMovies && <MoviesListSkeleton />}
 				{data?.pages
 					.filter(
-						(page): page is GetDiscoverMoviesResponse =>
+						(page): page is SearchMoviesResponse =>
 							page !== undefined,
 					)
 					.map((page) =>
@@ -78,7 +84,13 @@ export const PopularMovies = ({ userId }: Props) => {
 				{isFetchingNextPage && <MoviesListSkeleton />}
 			</section>
 			<div ref={observerRef} className="text-center text-gray-300">
-				{!hasNextPage && "Fin de la liste 🎬"}
+				{!hasNextPage &&
+					data?.pages?.[0]?.discoverMovies &&
+					"Fin de la liste 🎬"}
+				{!hasNextPage &&
+					!isFetching &&
+					data?.pages?.[0]?.discoverMovies?.length === 0 &&
+					"Aucun résultat trouvé"}
 			</div>
 			{selectedMovie && (
 				<MovieDrawer
