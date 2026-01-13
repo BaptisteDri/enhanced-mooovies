@@ -45,17 +45,14 @@ export const MovieDrawer = ({
 					<Drawer.Content className="bg-gray-900 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0 z-30">
 						<div className="bg-gray-900 rounded-t-[10px] flex-1 overflow-hidden">
 							<Drawer.Title></Drawer.Title>
-							<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-700 mt-5" />
+							<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-700 mt-5" />
 							<div className="max-w-md mx-auto p-4">
 								{isLoading ? (
 									<Skeleton />
 								) : (
 									<>
 										<DrawerPoster movie={movie} />
-										<SeenChip
-											movie={movie}
-											userId={userId}
-										/>
+
 										<DrawerTitle
 											original_title={
 												movie.original_title
@@ -63,7 +60,11 @@ export const MovieDrawer = ({
 											title={movie.title}
 											year={year}
 										/>
-										<DrawerCategories movie={movie} />
+
+										<DrawerCategories
+											movie={movie}
+											userId={userId}
+										/>
 
 										<p className="mb-2 line-clamp-4 text-gray-400 text-sm">
 											{movie.overview}
