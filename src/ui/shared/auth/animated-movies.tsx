@@ -25,7 +25,7 @@ export const AnimatedMovies = async () => {
 				<Marquee movies={parsedMovies.slice(12, 16)} reverse />
 				<Marquee movies={parsedMovies.slice(16, 20)} />
 			</div>
-			<div className="absolute left-0 top-0 bg-gradient-to-r from-gray-950 to-transparent h-full w-14"></div>
+			<div className="absolute left-0 top-0 bg-linear-to-r from-gray-950 to-transparent h-full w-14"></div>
 		</div>
 	)
 }
