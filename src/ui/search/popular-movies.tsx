@@ -18,7 +18,13 @@ export const PopularMovies = ({ userId }: Props) => {
 	const observerRef = useRef<HTMLDivElement>(null)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-		useInfiniteQuery<GetDiscoverMoviesResponse>(getInfinitePopularMovies())
+		useInfiniteQuery<GetDiscoverMoviesResponse>({
+			...getInfinitePopularMovies(),
+			queryFn: ({ pageParam }) =>
+				getInfinitePopularMovies().queryFn({
+					pageParam: pageParam as any,
+				}),
+		})
 
 	useEffect(() => {
 		if (!hasNextPage || isFetchingNextPage) return

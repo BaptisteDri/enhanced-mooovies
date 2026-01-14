@@ -18,9 +18,13 @@ export const SearchResults = ({ userId, searchQuery }: Props) => {
 	const observerRef = useRef<HTMLDivElement>(null)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-		useInfiniteQuery<SearchMoviesResponse>(
-			getInfiniteSearchMovies(searchQuery),
-		)
+		useInfiniteQuery<SearchMoviesResponse>({
+			...getInfiniteSearchMovies(searchQuery),
+			queryFn: ({ pageParam }) =>
+				getInfiniteSearchMovies(searchQuery).queryFn({
+					pageParam: pageParam as any,
+				}),
+		})
 
 	useEffect(() => {
 		if (!hasNextPage || isFetchingNextPage) return

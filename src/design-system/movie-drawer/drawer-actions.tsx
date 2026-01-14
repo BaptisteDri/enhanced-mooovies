@@ -62,6 +62,8 @@ export const DrawerActions = ({ movie, userId }: Props) => {
 	}
 
 	const addToList = (isSeen: boolean = false) => {
+		if (!movie.poster_path) return
+
 		const movieToAdd: AddMovieDto = {
 			director: directors,
 			genre_ids: movie.genres.map((genre) => genre.id).join(", "),
