@@ -59,7 +59,8 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					</span>
 				)}
 			</h1>
-			{notSeenMovies && notSeenMovies.length > 0 && (
+			{((notSeenMovies && notSeenMovies.length > 0) ||
+				isNotSeenMoviesFetching) && (
 				<MoviesListPreviewSection
 					amount={notSeenMoviesAmount}
 					href={"/a-voir"}
@@ -69,9 +70,11 @@ export const PreviewedMovies = ({ userId }: Props) => {
 						setSelectedMovie(movie)
 						setIsDrawerOpen(true)
 					}}
+					isLoading={isNotSeenMoviesFetching}
 				/>
 			)}
-			{seenMovies && seenMovies.length > 0 && (
+			{((seenMovies && seenMovies.length > 0) ||
+				isSeenMoviesFetching) && (
 				<MoviesListPreviewSection
 					amount={seenMoviesAmount}
 					href={"/vus"}
@@ -81,6 +84,7 @@ export const PreviewedMovies = ({ userId }: Props) => {
 						setSelectedMovie(movie)
 						setIsDrawerOpen(true)
 					}}
+					isLoading={isSeenMoviesFetching}
 				/>
 			)}
 			{selectedMovie && (

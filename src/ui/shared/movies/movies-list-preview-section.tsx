@@ -4,6 +4,7 @@ import { CommonMovie } from "@/core/common/types/common-movie"
 import { Movie } from "@/core/movies/types/movie"
 import { Icon } from "@/design-system/icons"
 import { MovieCard } from "@/design-system/movie-card"
+import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import Link from "next/link"
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 	title: string
 	movies: Movie[]
 	setSelectedMovie: (movie?: Movie) => void
+	isLoading?: boolean
 }
 
 export const MoviesListPreviewSection = ({
@@ -20,6 +22,7 @@ export const MoviesListPreviewSection = ({
 	title,
 	movies,
 	setSelectedMovie,
+	isLoading,
 }: Props) => {
 	return (
 		<section className="space-y-4">
@@ -37,16 +40,23 @@ export const MoviesListPreviewSection = ({
 				</Link>
 			</section>
 			<div className="flex gap-4 overflow-x-auto no-scrollbar px-4">
-				{movies.map((movie, i) => (
-					<MovieCard
-						setSelectedMovie={
-							setSelectedMovie as (movie: CommonMovie) => void
-						}
-						movie={{ ...movie, type: "movie" }}
-						key={i}
-						className={"min-w-[33vw] lg:min-w-40"}
+				{isLoading ? (
+					<MoviesListSkeleton
+						className="min-w-[33vw] lg:min-w-40"
+						amount={10}
 					/>
-				))}
+				) : (
+					movies.map((movie, i) => (
+						<MovieCard
+							setSelectedMovie={
+								setSelectedMovie as (movie: CommonMovie) => void
+							}
+							movie={{ ...movie, type: "movie" }}
+							key={i}
+							className={"min-w-[33vw] lg:min-w-40"}
+						/>
+					))
+				)}
 				{movies.length === 0 && (
 					<Link
 						href="/recherche"

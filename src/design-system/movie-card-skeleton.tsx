@@ -8,7 +8,7 @@ type Props = {
 export const MovieCardSkeleton = ({ className }: Props) => (
 	<div
 		className={twMerge(
-			"relative overflow-hidden rounded-md aspect-[2/3] flex bg-gray-800 animate-pulse",
+			"relative overflow-hidden rounded-md aspect-2/3 flex bg-gray-800 animate-pulse",
 			className,
 		)}
 	></div>
