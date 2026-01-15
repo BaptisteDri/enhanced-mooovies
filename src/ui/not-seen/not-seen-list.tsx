@@ -1,27 +1,17 @@
 "use client"
 
-import { CommonMovie } from "@/core/common/types/common-movie"
-import { getInfiniteNotSeenMovies } from "@/core/movies/queries/get-infinite-not-seen-movies"
-import { Movie } from "@/core/movies/types/movie"
-import { MovieCard } from "@/design-system/movie-card"
-import { MovieDrawer } from "@/design-system/movie-drawer"
-import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { GetMoviesDto } from "@/core/movies/infrastructure/movies.supabase"
-import { StickySearchBar } from "@/ui/shared/sticky-search-bar"
+import { getInfiniteNotSeenMovies } from "@/core/movies/queries/get-infinite-not-seen-movies"
+import { LIMIT, MoviesList } from "@/ui/shared/movies/movies-list"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useState } from "react"
 
 type Props = {
 	userId: string
 }
 
-const LIMIT = 15
-
 export const NotSeenList = ({ userId }: Props) => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-	const [selectedMovie, setSelectedMovie] = useState<Movie>()
 	const [searchQuery, setSearchQuery] = useState("")
-	const observerRef = useRef<HTMLDivElement>(null)
 
 	const dto: GetMoviesDto = useMemo(
 		() => ({
@@ -37,84 +27,17 @@ export const NotSeenList = ({ userId }: Props) => {
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
 		useInfiniteQuery(getInfiniteNotSeenMovies({ dto }))
 
-	useEffect(() => {
-		if (!hasNextPage || isFetchingNextPage) return
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				if (
-					entries[0].isIntersecting &&
-					hasNextPage &&
-					!isFetchingNextPage
-				) {
-					fetchNextPage()
-				}
-			},
-			{
-				rootMargin: "100px",
-				threshold: 0.1,
-			},
-		)
-
-		if (observerRef.current) {
-			observer.observe(observerRef.current)
-		}
-
-		return () => observer.disconnect()
-	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
-	const movies = useMemo(
-		() => data?.pages.flatMap((page) => page.movies) ?? [],
-		[data?.pages],
-	)
-
 	return (
-		<>
-			<StickySearchBar onSearchChange={setSearchQuery} />
-			<h1 className="text-4xl font-semibold px-4">
-				À voir
-				{!!data?.pages[0].amount && (
-					<span className="text-lg ml-2 text-gray-400 font-normal">
-						({data?.pages[0].amount})
-					</span>
-				)}
-			</h1>
-			<section className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-4">
-				{isPending && <MoviesListSkeleton />}
-				{movies.map((movie, i) => (
-					<MovieCard
-						movie={{ ...movie, type: "movie" }}
-						key={`${movie.uuid}-${i}`}
-						sizes="33vw"
-						setSelectedMovie={(movie) => {
-							if (movie.type === "discover") return
-							setSelectedMovie(movie)
-							setIsDrawerOpen(true)
-						}}
-					/>
-				))}
-				{isFetchingNextPage &&
-					data?.pages[0].amount &&
-					data?.pages[0].amount > LIMIT && <MoviesListSkeleton />}
-			</section>
-			<div ref={observerRef} className="text-center text-gray-300">
-				{!hasNextPage && !searchQuery.trim() && "Fin de la liste 🎬"}
-				{searchQuery.trim() &&
-					movies.length === 0 &&
-					"Aucun film trouvé"}
-			</div>
-			{selectedMovie && (
-				<MovieDrawer
-					origin="library"
-					id={selectedMovie.tmdb_id}
-					open={isDrawerOpen}
-					setOpen={setIsDrawerOpen}
-					setSelectedMovie={
-						setSelectedMovie as (movie?: CommonMovie) => void
-					}
-					userId={userId}
-				/>
-			)}
-		</>
+		<MoviesList
+			userId={userId}
+			title="À voir"
+			data={data}
+			fetchNextPage={fetchNextPage}
+			hasNextPage={hasNextPage ?? false}
+			isFetchingNextPage={isFetchingNextPage}
+			isPending={isPending}
+			searchQuery={searchQuery}
+			onSearchChange={setSearchQuery}
+		/>
 	)
 }
