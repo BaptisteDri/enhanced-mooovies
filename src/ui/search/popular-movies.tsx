@@ -88,6 +88,7 @@ export const PopularMovies = ({ userId }: Props) => {
 			</div>
 			{selectedMovie && (
 				<MovieDrawer
+					origin="search"
 					id={selectedMovie.id}
 					open={isDrawerOpen}
 					setOpen={setIsDrawerOpen}

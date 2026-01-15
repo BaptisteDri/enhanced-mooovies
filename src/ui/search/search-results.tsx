@@ -98,6 +98,7 @@ export const SearchResults = ({ userId, searchQuery }: Props) => {
 			</div>
 			{selectedMovie && (
 				<MovieDrawer
+					origin="search"
 					id={selectedMovie.id}
 					open={isDrawerOpen}
 					setOpen={setIsDrawerOpen}

@@ -33,22 +33,20 @@ export const SeenChip = ({ movie, userId }: Props) => {
 			year: "numeric",
 		})
 
-	if (!isSeen) return <></>
-
 	return (
 		<p
 			className={twMerge(
-				"border text-xs border-indigo-500 rounded-md bg-linear-to-br from-indigo-950 to-indigo-900 flex items-center gap-2 relative z-10",
+				"transition-colors duration-150 border text-xs rounded-md flex items-center gap-2 relative z-10",
 				"transition-all duration-300",
-				"text-xs font-light w-fit rounded-md px-1.5 py-0.5 ",
+				"text-xs font-light w-fit rounded-md px-1.5 py-0.5 max-h-8.5",
 				isSeen
-					? "max-h-8.5"
-					: "max-h-0 overflow-hidden mb-0  opacity-0 scale-0 p-0",
+					? "bg-linear-to-br from-indigo-950 to-indigo-900 border-indigo-500"
+					: "border-gray-700 bg-gray-800",
 			)}
 			style={{ transform: "translateZ(0)" }}
 		>
-			<Icon name="eye" size={12} />
-			Vu le {formattedDate}
+			<Icon name={isSeen ? "eye" : "eye-slash"} size={12} />
+			{isSeen ? `Vu le ${formattedDate}` : "Pas encore vu"}
 		</p>
 	)
 }

@@ -3,11 +3,11 @@
 import { CommonMovie } from "@/core/common/types/common-movie"
 import { getTMDBMovie } from "@/core/discover/queries/get-discover-movie"
 import { DiscoverMovie } from "@/core/discover/types/discover-movies"
+import { getMovie } from "@/core/movies/queries/get-movie"
 import { DrawerActions } from "@/design-system/movie-drawer/drawer-actions"
 import { DrawerCategories } from "@/design-system/movie-drawer/drawer-categories"
 import { DrawerPoster } from "@/design-system/movie-drawer/drawer-poster"
 import { DrawerTitle } from "@/design-system/movie-drawer/drawer-title"
-import { SeenChip } from "@/design-system/movie-drawer/seen-chip"
 import { Skeleton } from "@/design-system/movie-drawer/skeleton"
 import { useQuery } from "@tanstack/react-query"
 import { Drawer } from "vaul"
@@ -17,6 +17,7 @@ type Props = {
 	open: boolean
 	setSelectedMovie?: (movie?: CommonMovie) => void
 	userId: string
+	origin: "library" | "search"
 } & Pick<DiscoverMovie, "id">
 
 export const MovieDrawer = ({
@@ -25,13 +26,26 @@ export const MovieDrawer = ({
 	setOpen,
 	setSelectedMovie,
 	userId,
+	origin,
 }: Props) => {
-	const { data: movie, isFetching } = useQuery(
+	const { data: movie, isFetching: isTMDBMovieFetching } = useQuery(
 		getTMDBMovie({ id, enabled: open }),
 	)
 
+	const { data: libraryMovie, isFetching: isLibraryMovieFetching } = useQuery(
+		getMovie({
+			tmdb_id: movie?.id as number,
+			userId,
+			enabled: !!movie?.id,
+			retry: false,
+		}),
+	)
+
 	const year = movie?.release_date?.split("-")[0]
-	const isLoading = isFetching || !movie
+	const isLoading =
+		isTMDBMovieFetching ||
+		!movie ||
+		(origin === "library" && (!libraryMovie || isLibraryMovieFetching))
 
 	return (
 		<>

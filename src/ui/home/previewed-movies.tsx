@@ -59,16 +59,18 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					</span>
 				)}
 			</h1>
-			<MoviesListPreviewSection
-				amount={notSeenMoviesAmount}
-				href={"/a-voir"}
-				title={"À voir"}
-				movies={notSeenMovies || []}
-				setSelectedMovie={(movie) => {
-					setSelectedMovie(movie)
-					setIsDrawerOpen(true)
-				}}
-			/>
+			{notSeenMovies && notSeenMovies.length > 0 && (
+				<MoviesListPreviewSection
+					amount={notSeenMoviesAmount}
+					href={"/a-voir"}
+					title={"À voir"}
+					movies={notSeenMovies || []}
+					setSelectedMovie={(movie) => {
+						setSelectedMovie(movie)
+						setIsDrawerOpen(true)
+					}}
+				/>
+			)}
 			{seenMovies && seenMovies.length > 0 && (
 				<MoviesListPreviewSection
 					amount={seenMoviesAmount}
@@ -83,6 +85,7 @@ export const PreviewedMovies = ({ userId }: Props) => {
 			)}
 			{selectedMovie && (
 				<MovieDrawer
+					origin="library"
 					id={selectedMovie.tmdb_id}
 					open={isDrawerOpen}
 					setOpen={setIsDrawerOpen}

@@ -1,5 +1,3 @@
-import { getNotSeenMovies } from "@/core/movies/queries/get-not-seen-movies"
-import { getSeenMovies } from "@/core/movies/queries/get-seen-movies"
 import { createClient } from "@/libs/supabase/server"
 import { PreviewedMovies } from "@/ui/home/previewed-movies"
 import { CategoriesListSection } from "@/ui/shared/movies/categories-list-section"
