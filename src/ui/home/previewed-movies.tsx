@@ -47,7 +47,7 @@ export const PreviewedMovies = ({ userId }: Props) => {
 
 	return (
 		<>
-			<h1 className="text-4xl font-semibold px-4">
+			<h1 className="text-4xl font-semibold px-4 pt-4">
 				Mes films{" "}
 				{!(
 					isNotSeenMoviesFetching ||

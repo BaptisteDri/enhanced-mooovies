@@ -20,11 +20,15 @@ export const getInfiniteSeenMovies = ({ dto }: Options) => ({
 			nextCursor: undefined,
 		},
 	initialPageParam: dto,
-	getNextPageParam: (lastPage: GetMoviesResponse) => {
+	getNextPageParam: (
+		lastPage: GetMoviesResponse,
+		_allPages: any,
+		lastPageParam: GetMoviesDto,
+	) => {
 		if (lastPage.movies.length === 0 || !lastPage.nextCursor)
 			return undefined
 		return {
-			...dto,
+			...lastPageParam,
 			offset: lastPage.movies.length > 0 ? lastPage.nextCursor : null,
 		}
 	},

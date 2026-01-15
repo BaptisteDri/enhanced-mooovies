@@ -7,27 +7,35 @@ import { Movie } from "@/core/movies/types/movie"
 import { MovieCard } from "@/design-system/movie-card"
 import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
+import { StickySearchBar } from "@/ui/shared/sticky-search-bar"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 type Props = {
 	userId: string
 }
 
+const LIMIT = 15
+
 export const SeenList = ({ userId }: Props) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const [selectedMovie, setSelectedMovie] = useState<Movie>()
+	const [searchQuery, setSearchQuery] = useState("")
 	const observerRef = useRef<HTMLDivElement>(null)
 
-	const dto: GetMoviesDto = {
-		userId,
-		seen: true,
-		limit: 15,
-		offset: 0,
-		orderBy: "watched_date",
-	}
+	const dto: GetMoviesDto = useMemo(
+		() => ({
+			userId,
+			seen: true,
+			limit: LIMIT,
+			offset: 0,
+			orderBy: "watched_date",
+			searchQuery: searchQuery.trim() || undefined,
+		}),
+		[userId, searchQuery],
+	)
 
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
 		useInfiniteQuery(getInfiniteSeenMovies({ dto }))
 
 	useEffect(() => {
@@ -56,8 +64,14 @@ export const SeenList = ({ userId }: Props) => {
 		return () => observer.disconnect()
 	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+	const movies = useMemo(
+		() => data?.pages.flatMap((page) => page.movies) ?? [],
+		[data?.pages],
+	)
+
 	return (
 		<>
+			<StickySearchBar onSearchChange={setSearchQuery} />
 			<h1 className="text-4xl font-semibold px-4">
 				Vus
 				{!!data?.pages[0].amount && (
@@ -67,27 +81,28 @@ export const SeenList = ({ userId }: Props) => {
 				)}
 			</h1>
 			<section className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-4">
-				{isFetching &&
-					!isFetchingNextPage &&
-					!data?.pages?.[0]?.movies && <MoviesListSkeleton />}
-				{data?.pages.map((page, i) =>
-					page.movies.map((movie, i) => (
-						<MovieCard
-							movie={{ ...movie, type: "movie" }}
-							key={i}
-							sizes="33vw"
-							setSelectedMovie={(movie) => {
-								if (movie.type === "discover") return
-								setSelectedMovie(movie)
-								setIsDrawerOpen(true)
-							}}
-						/>
-					)),
-				)}
-				{isFetchingNextPage && <MoviesListSkeleton />}
+				{isPending && <MoviesListSkeleton />}
+				{movies.map((movie, i) => (
+					<MovieCard
+						movie={{ ...movie, type: "movie" }}
+						key={`${movie.uuid}-${i}`}
+						sizes="33vw"
+						setSelectedMovie={(movie) => {
+							if (movie.type === "discover") return
+							setSelectedMovie(movie)
+							setIsDrawerOpen(true)
+						}}
+					/>
+				))}
+				{isFetchingNextPage &&
+					data?.pages[0].amount &&
+					data?.pages[0].amount > LIMIT && <MoviesListSkeleton />}
 			</section>
 			<div ref={observerRef} className="text-center text-gray-300">
-				{!hasNextPage && "Fin de la liste 🎬"}
+				{!hasNextPage && !searchQuery.trim() && "Fin de la liste 🎬"}
+				{searchQuery.trim() &&
+					movies.length === 0 &&
+					"Aucun film trouvé"}
 			</div>
 			{selectedMovie && (
 				<MovieDrawer
