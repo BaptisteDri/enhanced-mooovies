@@ -3,15 +3,16 @@
 import { GetMoviesDto } from "@/core/movies/infrastructure/movies.supabase"
 import { getInfiniteSeenMovies } from "@/core/movies/queries/get-infinite-seen-movies"
 import { LIMIT, MoviesList } from "@/ui/shared/movies/movies-list"
+import { useSearchQuery } from "@/ui/shared/hooks/use-search-query"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 
 type Props = {
 	userId: string
 }
 
 export const SeenList = ({ userId }: Props) => {
-	const [searchQuery, setSearchQuery] = useState("")
+	const { setSearchQuery, debouncedSearchQuery } = useSearchQuery()
 
 	const dto: GetMoviesDto = useMemo(
 		() => ({
@@ -20,9 +21,9 @@ export const SeenList = ({ userId }: Props) => {
 			limit: LIMIT,
 			offset: 0,
 			orderBy: "watched_date",
-			searchQuery: searchQuery.trim() || undefined,
+			searchQuery: debouncedSearchQuery.trim() || undefined,
 		}),
-		[userId, searchQuery],
+		[userId, debouncedSearchQuery],
 	)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
@@ -37,7 +38,7 @@ export const SeenList = ({ userId }: Props) => {
 			hasNextPage={hasNextPage ?? false}
 			isFetchingNextPage={isFetchingNextPage}
 			isPending={isPending}
-			searchQuery={searchQuery}
+			searchQuery={debouncedSearchQuery}
 			onSearchChange={setSearchQuery}
 		/>
 	)
