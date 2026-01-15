@@ -8,7 +8,7 @@ import { MovieCard } from "@/design-system/movie-card"
 import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 type Props = {
 	userId: string
@@ -66,7 +66,7 @@ export const SeenList = ({ userId }: Props) => {
 					</span>
 				)}
 			</h1>
-			<section className="grid grid-cols-3 gap-4 px-4">
+			<section className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-4">
 				{isFetching &&
 					!isFetchingNextPage &&
 					!data?.pages?.[0]?.movies && <MoviesListSkeleton />}

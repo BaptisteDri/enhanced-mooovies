@@ -28,14 +28,14 @@ export const CategoriesListSection = () => {
 	return (
 		<section className="space-y-4 px-4">
 			<h2 className="font-medium text-xl">À voir par catégories</h2>
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
 				{categories.map((category, i) => (
 					<Link
 						href={"#"}
 						key={i}
 						className={twMerge(
 							"aspect-video rounded-md flex flex-col gap-2 justify-between py-2 px-3 shadow-lg",
-							"bg-gradient-to-br from-transparent via-transparent bg-gray-900",
+							"bg-linear-to-br from-transparent via-transparent bg-gray-900",
 							categoriesColor[category.id],
 						)}
 					>

@@ -21,37 +21,8 @@ const Home: NextPage = async () => {
 	const supabase = createClient()
 	const { data } = await supabase.auth.getUser()
 
-	const notSeenMoviesData = await queryClient.fetchQuery(
-		getNotSeenMovies({
-			enabled: true,
-			dto: { limit: 6, userId: data.user?.id || "" },
-		}),
-	)
-
-	const seenMoviesData = await queryClient.fetchQuery(
-		getSeenMovies({
-			enabled: true,
-			dto: {
-				limit: 6,
-				userId: data.user?.id || "",
-				orderBy: "watched_date",
-			},
-		}),
-	)
-
-	const amount =
-		(seenMoviesData?.amount || 0) + (notSeenMoviesData?.amount || 0)
-
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<h1 className="text-4xl font-semibold px-4">
-				Mes films
-				{!!amount && (
-					<span className="text-lg ml-2 text-gray-400 font-normal">
-						({amount})
-					</span>
-				)}
-			</h1>
 			<PreviewedMovies userId={data.user?.id || ""} />
 			<CategoriesListSection />
 		</HydrationBoundary>

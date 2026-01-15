@@ -21,10 +21,10 @@ export const PreviewedMovies = ({ userId }: Props) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const [selectedMovie, setSelectedMovie] = useState<Movie>()
 
-	const { data: seenMoviesData } = useQuery(
+	const { data: seenMoviesData, isFetching: isSeenMoviesFetching } = useQuery(
 		getSeenMovies({
 			dto: {
-				limit: 6,
+				limit: 10,
 				userId,
 				orderBy: "watched_date",
 			},
@@ -35,15 +35,30 @@ export const PreviewedMovies = ({ userId }: Props) => {
 		...seenMoviesData,
 	}
 
-	const { data: notSeenMoviesData } = useQuery(
-		getNotSeenMovies({ dto: { limit: 10, userId }, enabled: true }),
-	)
+	const { data: notSeenMoviesData, isFetching: isNotSeenMoviesFetching } =
+		useQuery(
+			getNotSeenMovies({ dto: { limit: 10, userId }, enabled: true }),
+		)
 	const { amount: notSeenMoviesAmount, movies: notSeenMovies } = {
 		...notSeenMoviesData,
 	}
 
+	const totalAmount = (notSeenMoviesAmount || 0) + (seenMoviesAmount || 0)
+
 	return (
 		<>
+			<h1 className="text-4xl font-semibold px-4">
+				Mes films{" "}
+				{!(
+					isNotSeenMoviesFetching ||
+					isSeenMoviesFetching ||
+					totalAmount === 0
+				) && (
+					<span className="text-lg text-gray-400 font-normal">
+						({totalAmount})
+					</span>
+				)}
+			</h1>
 			<MoviesListPreviewSection
 				amount={notSeenMoviesAmount}
 				href={"/a-voir"}

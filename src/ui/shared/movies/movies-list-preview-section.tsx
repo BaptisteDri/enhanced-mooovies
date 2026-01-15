@@ -44,13 +44,13 @@ export const MoviesListPreviewSection = ({
 						}
 						movie={{ ...movie, type: "movie" }}
 						key={i}
-						className={"min-w-[33vw]"}
+						className={"min-w-[33vw] lg:min-w-40"}
 					/>
 				))}
 				{movies.length === 0 && (
 					<Link
 						href="/recherche"
-						className="rounded-md aspect-[2/3] bg-gray-900 min-w-[33vw] flex items-center justify-center flex-col gap-2 text-sm text-gray-300"
+						className="rounded-md aspect-2/3 bg-gray-900 min-w-[33vw] lg:min-w-40 flex items-center justify-center flex-col gap-2 text-sm text-gray-300"
 					>
 						<Icon name="plus-circle" size={24} />
 						Ajouter un film
