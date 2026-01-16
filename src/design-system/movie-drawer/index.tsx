@@ -1,8 +1,7 @@
 "use client"
 
-import { CommonMovie } from "@/core/common/types/common-movie"
+
 import { getTMDBMovie } from "@/core/discover/queries/get-discover-movie"
-import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { getMovie } from "@/core/movies/queries/get-movie"
 import { DrawerActions } from "@/design-system/movie-drawer/drawer-actions"
 import { DrawerCategories } from "@/design-system/movie-drawer/drawer-categories"
@@ -11,25 +10,24 @@ import { DrawerTitle } from "@/design-system/movie-drawer/drawer-title"
 import { Skeleton } from "@/design-system/movie-drawer/skeleton"
 import { useQuery } from "@tanstack/react-query"
 import { Drawer } from "vaul"
+import type { DrawerProps } from "@/ui/providers/drawer-render"
 
-type Props = {
-	setOpen: (open: boolean) => void
-	open: boolean
-	setSelectedMovie?: (movie?: CommonMovie) => void
+type DrawerData = {
+	id: number
 	userId: string
 	origin: "library" | "search"
-} & Pick<DiscoverMovie, "id">
+}
 
 export const MovieDrawer = ({
-	id,
-	open,
-	setOpen,
-	setSelectedMovie,
-	userId,
-	origin,
-}: Props) => {
+	closeDrawer,
+	data,
+	isOpen,
+}: DrawerProps) => {
+	const { id, userId, origin } = data as DrawerData
+
+	
 	const { data: movie, isFetching: isTMDBMovieFetching } = useQuery(
-		getTMDBMovie({ id, enabled: open }),
+		getTMDBMovie({ id, enabled: isOpen }),
 	)
 
 	const { data: libraryMovie, isFetching: isLibraryMovieFetching } = useQuery(
@@ -50,9 +48,11 @@ export const MovieDrawer = ({
 	return (
 		<>
 			<Drawer.Root
-				open={open}
-				onOpenChange={setOpen}
-				onAnimationEnd={() => setSelectedMovie?.(undefined)}
+				open={isOpen}
+				onOpenChange={(open) => {
+					if (!open) closeDrawer()
+				}}
+				// onAnimationEnd={() => setSelectedMovie?.(undefined)}
 			>
 				<Drawer.Portal>
 					<Drawer.Overlay className="fixed inset-0 bg-gray-950/50 z-20" />

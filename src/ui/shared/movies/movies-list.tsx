@@ -1,14 +1,13 @@
 "use client"
 
-import { CommonMovie } from "@/core/common/types/common-movie"
 import { GetMoviesResponse } from "@/core/movies/infrastructure/movies.supabase"
 import { Movie } from "@/core/movies/types/movie"
 import { MovieCard } from "@/design-system/movie-card"
-import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
+import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { StickySearchBar } from "@/ui/shared/sticky-search-bar"
 import { InfiniteData } from "@tanstack/react-query"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef } from "react"
 
 export const LIMIT = 15
 
@@ -35,9 +34,13 @@ export const MoviesList = ({
 	searchQuery,
 	onSearchChange,
 }: Props) => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-	const [selectedMovie, setSelectedMovie] = useState<Movie>()
 	const observerRef = useRef<HTMLDivElement>(null)
+
+	const { openDrawer } = useDrawer()
+
+	const handleOpenDrawer = (movie: Movie) => {
+		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.tmdb_id, userId, origin: "library" } })
+	}
 
 	useEffect(() => {
 		if (!hasNextPage) return
@@ -90,8 +93,7 @@ export const MoviesList = ({
 						sizes="33vw"
 						setSelectedMovie={(movie) => {
 							if (movie.type === "discover") return
-							setSelectedMovie(movie)
-							setIsDrawerOpen(true)
+							handleOpenDrawer(movie)
 						}}
 					/>
 				))}
@@ -105,18 +107,6 @@ export const MoviesList = ({
 					movies.length === 0 &&
 					"Aucun film trouvé"}
 			</div>
-			{selectedMovie && (
-				<MovieDrawer
-					origin="library"
-					id={selectedMovie.tmdb_id}
-					open={isDrawerOpen}
-					setOpen={setIsDrawerOpen}
-					setSelectedMovie={
-						setSelectedMovie as (movie?: CommonMovie) => void
-					}
-					userId={userId}
-				/>
-			)}
 		</>
 	)
 }

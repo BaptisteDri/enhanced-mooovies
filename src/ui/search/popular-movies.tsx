@@ -1,20 +1,23 @@
 "use client"
 
-import { CommonMovie } from "@/core/common/types/common-movie"
 import { GetDiscoverMoviesResponse } from "@/core/discover/infrastructure/discover-movies.api"
 import { getInfinitePopularMovies } from "@/core/discover/queries/get-infinite-popular-movies"
 import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { MovieCard } from "@/design-system/movie-card"
-import { MovieDrawer } from "@/design-system/movie-drawer"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
+import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 type Props = { userId: string }
 
 export const PopularMovies = ({ userId }: Props) => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-	const [selectedMovie, setSelectedMovie] = useState<DiscoverMovie>()
+	const { openDrawer } = useDrawer()
+
+	const handleOpenDrawer = (movie: DiscoverMovie) => {
+		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.id, userId, origin: "search" } })
+	}
+
 	const observerRef = useRef<HTMLDivElement>(null)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
@@ -75,8 +78,7 @@ export const PopularMovies = ({ userId }: Props) => {
 									sizes="33vw"
 									setSelectedMovie={(movie) => {
 										if (movie.type === "movie") return
-										setSelectedMovie(movie)
-										setIsDrawerOpen(true)
+										handleOpenDrawer(movie)
 									}}
 								/>
 							)),
@@ -86,18 +88,6 @@ export const PopularMovies = ({ userId }: Props) => {
 			<div ref={observerRef} className="text-center text-gray-300">
 				{!hasNextPage && "Fin de la liste 🎬"}
 			</div>
-			{selectedMovie && (
-				<MovieDrawer
-					origin="search"
-					id={selectedMovie.id}
-					open={isDrawerOpen}
-					setOpen={setIsDrawerOpen}
-					setSelectedMovie={
-						setSelectedMovie as (movie?: CommonMovie) => void
-					}
-					userId={userId}
-				/>
-			)}
 		</>
 	)
 }

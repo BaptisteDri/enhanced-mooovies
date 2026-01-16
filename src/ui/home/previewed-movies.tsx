@@ -1,25 +1,23 @@
 "use client"
 
-import { CommonMovie } from "@/core/common/types/common-movie"
 import { getNotSeenMovies } from "@/core/movies/queries/get-not-seen-movies"
 import { getSeenMovies } from "@/core/movies/queries/get-seen-movies"
 import { Movie } from "@/core/movies/types/movie"
+import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
 import { useQuery } from "@tanstack/react-query"
-import dynamic from "next/dynamic"
-import { useState } from "react"
 
-const MovieDrawer = dynamic(() =>
-	import("@/design-system/movie-drawer").then((mod) => mod.MovieDrawer),
-)
 
 type Props = {
 	userId: string
 }
 
 export const PreviewedMovies = ({ userId }: Props) => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-	const [selectedMovie, setSelectedMovie] = useState<Movie>()
+	const { openDrawer } = useDrawer()
+
+	const handleOpenDrawer = (movie: Movie) => {
+		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.tmdb_id, userId, origin: "library" } })
+	}
 
 	const { data: seenMoviesData, isFetching: isSeenMoviesFetching } = useQuery(
 		getSeenMovies({
@@ -67,8 +65,8 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					title={"À voir"}
 					movies={notSeenMovies || []}
 					setSelectedMovie={(movie) => {
-						setSelectedMovie(movie)
-						setIsDrawerOpen(true)
+						if (!movie) return
+						handleOpenDrawer(movie)
 					}}
 					isLoading={isNotSeenMoviesFetching}
 				/>
@@ -81,24 +79,13 @@ export const PreviewedMovies = ({ userId }: Props) => {
 					title={"Vus"}
 					movies={seenMovies || []}
 					setSelectedMovie={(movie) => {
-						setSelectedMovie(movie)
-						setIsDrawerOpen(true)
+						if (!movie) return
+						handleOpenDrawer(movie)
 					}}
 					isLoading={isSeenMoviesFetching}
 				/>
 			)}
-			{selectedMovie && (
-				<MovieDrawer
-					origin="library"
-					id={selectedMovie.tmdb_id}
-					open={isDrawerOpen}
-					setOpen={setIsDrawerOpen}
-					setSelectedMovie={
-						setSelectedMovie as (movie?: CommonMovie) => void
-					}
-					userId={userId}
-				/>
-			)}
+			
 		</>
 	)
 }
