@@ -21,6 +21,7 @@ type Props = {
 	isPending: boolean
 	searchQuery: string
 	onSearchChange: (query: string) => void
+	moviesType: "watched" | "all"
 }
 
 export const MoviesList = ({
@@ -33,6 +34,7 @@ export const MoviesList = ({
 	isPending,
 	searchQuery,
 	onSearchChange,
+	moviesType,
 }: Props) => {
 	const observerRef = useRef<HTMLDivElement>(null)
 
@@ -75,7 +77,7 @@ export const MoviesList = ({
 
 	return (
 		<>
-			<StickySearchBar onSearchChange={onSearchChange} />
+			<StickySearchBar onSearchChange={onSearchChange} moviesType={moviesType} />
 			<h1 className="text-4xl font-semibold px-4">
 				{title}
 				{!!data?.pages[0].amount && (

@@ -12,7 +12,7 @@ export const SearchPage = ({ userId }: Props) => {
 
 	return (
 		<>
-			<StickySearchBar onSearchChange={setSearchQuery} />
+			<StickySearchBar onSearchChange={setSearchQuery} moviesType="all" />
 			{debouncedSearchQuery ? (
 				<SearchResults
 					userId={userId}

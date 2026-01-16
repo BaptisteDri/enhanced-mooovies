@@ -40,6 +40,7 @@ export const SeenList = ({ userId }: Props) => {
 			isPending={isPending}
 			searchQuery={debouncedSearchQuery}
 			onSearchChange={setSearchQuery}
+			moviesType="watched"
 		/>
 	)
 }

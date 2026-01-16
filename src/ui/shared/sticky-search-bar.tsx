@@ -8,16 +8,18 @@ import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 type Props = {
 	onSearchChange: (query: string) => void
 	placeholder?: string
+	moviesType: "watched" | "all"
 }
 
 export const StickySearchBar = ({
 	onSearchChange,
 	placeholder = "Rechercher un titre de film...",
+	moviesType,
 }: Props) => {
 	const { openDrawer } = useDrawer()
 
 	const handleOpenDrawer = () => {
-		openDrawer({ id: DRAWER_IDS.SEARCH })
+		openDrawer({ id: DRAWER_IDS.SEARCH, data: { moviesType } })
 	}
 
 	return (

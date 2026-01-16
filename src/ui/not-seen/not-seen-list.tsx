@@ -39,6 +39,7 @@ export const NotSeenList = ({ userId }: Props) => {
 			isPending={isPending}
 			searchQuery={debouncedSearchQuery}
 			onSearchChange={setSearchQuery}
+			moviesType="all"
 		/>
 	)
 }

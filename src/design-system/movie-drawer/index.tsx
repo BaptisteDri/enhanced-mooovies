@@ -52,7 +52,6 @@ export const MovieDrawer = ({
 				onOpenChange={(open) => {
 					if (!open) closeDrawer()
 				}}
-				// onAnimationEnd={() => setSelectedMovie?.(undefined)}
 			>
 				<Drawer.Portal>
 					<Drawer.Overlay className="fixed inset-0 bg-gray-950/50 z-20" />
