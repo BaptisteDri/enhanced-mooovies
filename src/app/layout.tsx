@@ -3,6 +3,7 @@ import "./globals.css"
 import { Menu } from "@/design-system/menu"
 import ReactQueryProvider from "@/ui/providers/react-query-provider"
 import { DrawerProvider } from "@/ui/providers/drawer-provider"
+import { SearchFiltersProvider } from "@/ui/providers/search-filters-provider"
 import { createClient } from "@/libs/supabase/server"
 import { DrawerRender } from "@/ui/providers/drawer-render"
 
@@ -21,9 +22,11 @@ export default async function RootLayout({
 			<body className={inter.className}>
 				<ReactQueryProvider>
 					<DrawerProvider>
-						{children}
-						{data.user && <Menu />}
-						<DrawerRender />
+						<SearchFiltersProvider>
+							{children}
+							{data.user && <Menu />}
+							<DrawerRender />
+						</SearchFiltersProvider>
 					</DrawerProvider>
 				</ReactQueryProvider>
 			</body>

@@ -5,7 +5,7 @@ import { Icon } from "@/design-system/icons"
 import { FilterButton } from "@/design-system/filter-button"
 import { Drawer } from "vaul"
 import type { DrawerProps } from "@/ui/providers/drawer-render"
-import { useState } from "react"
+import { useSearchFilters, type SortOption } from "@/ui/providers/search-filters-provider"
 
 type Data = {
 	moviesType: "watched" | "all"
@@ -17,19 +17,30 @@ export const SearchDrawer = ({
 	data,
 }: DrawerProps) => {
 	const { moviesType } = data as Data
-	const [selectedGenre, setSelectedGenre] = useState<number | null>(null)
+	const {
+		selectedCategory,
+		sortBy,
+		setSelectedCategory,
+		setSortBy,
+	} = useSearchFilters()
 
 	const toggleGenre = (genreId: number) => {
-		setSelectedGenre(genreId)
+		setSelectedCategory(genreId)
 		closeDrawer()
 	}
 
 	const clearGenres = () => {
-		setSelectedGenre(null)
+		setSelectedCategory(null)
+		closeDrawer()
+	}
+
+	const handleSortChange = (sort: SortOption) => {
+		setSortBy(sort)
+		closeDrawer()
 	}
 
 	return (
-		<Drawer.Root open={isOpen} onOpenChange={(open) => !open && closeDrawer()}>
+		<Drawer.Root open={isOpen} onOpenChange={(open) => !open && clearGenres()}>
 			<Drawer.Portal>
 				<Drawer.Overlay className="fixed inset-0 bg-gray-950/50 z-20" />
 				<Drawer.Content className="bg-gray-900 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0 z-30">
@@ -53,33 +64,31 @@ export const SearchDrawer = ({
 							<section>
 								<h2 className="mb-2 font-medium text-gray-200">Trier par</h2>
 								<div className="flex flex-wrap gap-2">
-									{
-										moviesType === "watched" && (
-											<FilterButton
-												icon="👀"
-												label="Date de visionnage"
-												isSelected={false}
-												onClick={() => { }}
-											/>
-										)
-									}
+									{moviesType === "watched" && (
+										<FilterButton
+											icon="👀"
+											label="Date de visionnage"
+											isSelected={sortBy === "watched_date"}
+											onClick={() => handleSortChange("watched_date")}
+										/>
+									)}
 									<FilterButton
 										icon="📆"
 										label="Date d'ajout"
-										isSelected={false}
-										onClick={() => { }}
+										isSelected={sortBy === "added_date"}
+										onClick={() => handleSortChange("added_date")}
 									/>
 									<FilterButton
 										icon="🎥"
-										label="Date de sortie"
-										isSelected={false}
-										onClick={() => { }}
+										label="Année de sortie"
+										isSelected={sortBy === "year"}
+										onClick={() => handleSortChange("year")}
 									/>
 									<FilterButton
 										icon="🔠"
 										label="Titre"
-										isSelected={false}
-										onClick={() => { }}
+										isSelected={sortBy === "title"}
+										onClick={() => handleSortChange("title")}
 									/>
 								</div>
 							</section>
@@ -89,11 +98,11 @@ export const SearchDrawer = ({
 									<FilterButton
 										icon="🎬"
 										label="Toutes"
-										isSelected={!selectedGenre}
+										isSelected={!selectedCategory}
 										onClick={clearGenres}
 									/>
 									{categories.map((category) => {
-										const isSelected = selectedGenre === category.id
+										const isSelected = selectedCategory === category.id
 										return (
 											<FilterButton
 												key={category.id}
