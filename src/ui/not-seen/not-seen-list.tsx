@@ -27,7 +27,7 @@ export const NotSeenList = ({ userId }: Props) => {
 			searchQuery: debouncedSearchQuery.trim() || undefined,
 			categoryId: selectedCategory || undefined,
 		}),
-		[userId, debouncedSearchQuery, sortBy],
+		[userId, debouncedSearchQuery, sortBy, selectedCategory],
 	)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
@@ -44,7 +44,7 @@ export const NotSeenList = ({ userId }: Props) => {
 			isPending={isPending}
 			searchQuery={debouncedSearchQuery}
 			onSearchChange={setSearchQuery}
-			moviesType="all"
+			moviesType="not-seen"
 		/>
 	)
 }

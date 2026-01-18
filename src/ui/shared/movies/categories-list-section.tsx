@@ -31,7 +31,7 @@ export const CategoriesListSection = () => {
 			<div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
 				{categories.map((category, i) => (
 					<Link
-						href={"#"}
+						href={`/a-voir?category=${category.id}`}
 						key={i}
 						className={twMerge(
 							"aspect-video rounded-md flex flex-col gap-2 justify-between py-2 px-3 shadow-lg",

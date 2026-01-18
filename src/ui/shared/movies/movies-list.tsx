@@ -8,6 +8,7 @@ import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { MoviesType } from "@/ui/search/search-drawer"
 import { StickySearchBar } from "@/ui/shared/sticky-search-bar"
 import { InfiniteData } from "@tanstack/react-query"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef } from "react"
 
 export const LIMIT = 15
@@ -38,6 +39,9 @@ export const MoviesList = ({
 	moviesType,
 }: Props) => {
 	const observerRef = useRef<HTMLDivElement>(null)
+	const searchParams = useSearchParams()
+
+
 
 	const { openDrawer } = useDrawer()
 
