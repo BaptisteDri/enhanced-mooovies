@@ -14,7 +14,7 @@ type Props = {
 
 export const SeenList = ({ userId }: Props) => {
 	const { setSearchQuery, debouncedSearchQuery } = useSearchQuery()
-	const { sortBy } = useSearchFilters()
+	const { sortBy, selectedCategory } = useSearchFilters()
 
 	const dto: GetMoviesDto = useMemo(
 		() => ({
@@ -22,11 +22,12 @@ export const SeenList = ({ userId }: Props) => {
 			seen: true,
 			limit: LIMIT,
 			offset: 0,
-			orderBy: sortBy === "watched_date" || sortBy === "added_date" ? sortBy : "added_date", // @TODO: fix sort by year
+			orderBy: sortBy,
 			ascending: sortBy === "title",
 			searchQuery: debouncedSearchQuery.trim() || undefined,
+			categoryId: selectedCategory || undefined,
 		}),
-		[userId, debouncedSearchQuery, sortBy],
+		[userId, debouncedSearchQuery, sortBy, selectedCategory],
 	)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =

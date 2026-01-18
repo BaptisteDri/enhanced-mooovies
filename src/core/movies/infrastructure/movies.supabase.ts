@@ -9,8 +9,9 @@ export type GetMoviesDto = {
 	offset?: number | null
 	seen?: boolean
 	ascending?: boolean
-	orderBy?: "watched_date" | "added_date"
+	orderBy?: "watched_date" | "added_date" | "year" | "title"
 	searchQuery?: string
+	categoryId?: number
 }
 
 export type GetMoviesResponse = {
@@ -48,6 +49,7 @@ export const movies: {
 		orderBy = "added_date",
 		ascending = false,
 		searchQuery,
+		categoryId,
 	}) => {
 		try {
 			const query = supabase
@@ -64,6 +66,11 @@ export const movies: {
 
 			if (searchQuery?.trim()) {
 				query.ilike("title", `%${searchQuery.trim()}%`)
+			}
+
+			if (categoryId) {
+				const categoryIdStr = categoryId.toString()
+				query.ilike("genre_ids", `%${categoryIdStr}%`)
 			}
 
 			if (limit) {
