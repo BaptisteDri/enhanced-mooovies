@@ -31,19 +31,9 @@ export type GetMovieDto = {
 
 export type AddMovieDto = Omit<Movie, "uuid" | "added_date">
 
-export type GetOneMoviePerCategoryDto = {
-	userId: string
-	categoryIds: number[]
-}
-
-export type GetOneMoviePerCategoryResponse = Record<number, Movie | null>
-
 export const movies: {
 	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
 	getMovie: (dto: GetMovieDto) => Promise<Movie | undefined>
-	getOneMoviePerCategory: (
-		dto: GetOneMoviePerCategoryDto,
-	) => Promise<GetOneMoviePerCategoryResponse | undefined>
 	toggleMovieIsSeen: ({
 		uuid,
 		isSeen,
@@ -117,60 +107,6 @@ export const movies: {
 		if (error) throw error
 
 		return data
-	},
-	getOneMoviePerCategory: async ({ userId, categoryIds }) => {
-		// @TODO: OPTIMISER CETTE REQUETE
-		try {
-			// Récupérer tous les films non vus
-			const { data, error } = await supabase
-				.from("films")
-				.select("*")
-				.eq("user_id", userId)
-				.is("watched_date", null)
-				.order("added_date", { ascending: false })
-
-			if (error?.code === "PGRST103") return undefined
-
-			if (error) throw error
-
-			// Initialiser le résultat avec null pour chaque catégorie
-			const result: GetOneMoviePerCategoryResponse = {}
-			categoryIds.forEach((categoryId) => {
-				result[categoryId] = null
-			})
-
-			// Grouper les films par catégorie
-			if (data) {
-				const categoryIdStrSet = new Set(
-					categoryIds.map((id) => id.toString()),
-				)
-
-				for (const movie of data) {
-					if (!movie.genre_ids) continue
-
-					// Parser les genre_ids (format: "28, 12, 16")
-					const movieCategoryIds = movie.genre_ids
-						.split(",")
-						.map((id) => id.trim())
-
-					// Trouver la première catégorie correspondante qui n'a pas encore de film
-					for (const categoryIdStr of movieCategoryIds) {
-						const categoryId = parseInt(categoryIdStr, 10)
-						if (
-							categoryIdStrSet.has(categoryIdStr) &&
-							result[categoryId] === null
-						) {
-							result[categoryId] = movie
-							break // Un film ne peut être assigné qu'à une seule catégorie
-						}
-					}
-				}
-			}
-
-			return result
-		} catch (error) {
-			console.error(error)
-		}
 	},
 	toggleMovieIsSeen: async ({ isSeen, uuid }) => {
 		const { error } = await supabase
