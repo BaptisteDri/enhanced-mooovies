@@ -33,7 +33,7 @@ export const StickySearchBar = ({
 				onChange={(e) => onSearchChange(e.target.value)}
 			/>
 			<Button intent="secondary" onClick={handleOpenDrawer} className="size-12 p-0">
-				<Icon name="lock-closed" size={20} />
+				<Icon name="adjustments-horizontal" size={20} />
 			</Button>
 		</div>
 	)

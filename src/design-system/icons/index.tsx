@@ -9,6 +9,7 @@ import { Plus } from "@/design-system/icons/plus"
 import { PlusCircle } from "@/design-system/icons/plus-circle"
 import { UserCircle } from "@/design-system/icons/user-circle"
 import { XMark } from "@/design-system/icons/x-mark"
+import { AdjustmentsHorizontal } from "@/design-system/icons/adjustments-horizontal"
 
 const ICONS = {
 	envelope: Envelope,
@@ -22,6 +23,7 @@ const ICONS = {
 	plus: Plus,
 	"x-mark": XMark,
 	"plus-circle": PlusCircle,
+	"adjustments-horizontal": AdjustmentsHorizontal,
 } as const
 
 export type IconName = keyof typeof ICONS
