@@ -22,7 +22,7 @@ const Home: NextPage = async () => {
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<PreviewedMovies userId={data.user?.id || ""} />
-			<CategoriesListSection />
+			<CategoriesListSection userId={data.user?.id || ""} />
 		</HydrationBoundary>
 	)
 }

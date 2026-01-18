@@ -1,6 +1,11 @@
+"use client"
+
 import Link from "next/link"
+import Image from "next/image"
 import { categories } from "@/core/categories/categories"
+import { getOneMoviePerCategory } from "@/core/movies/queries/get-one-movie-per-category"
 import { twMerge } from "tailwind-merge"
+import { useQuery } from "@tanstack/react-query"
 
 export const categoriesColor: Record<number, string> = {
 	28: "to-red-700/30",
@@ -24,27 +29,63 @@ export const categoriesColor: Record<number, string> = {
 	37: "to-yellow-700/30",
 }
 
-export const CategoriesListSection = () => {
+type Props = {
+	userId: string
+}
+
+export const CategoriesListSection = ({ userId }: Props) => {
+	const categoryIds = categories.map((category) => category.id)
+
+	// @TODO: voir s'il faut invalider cette query ?
+	const { data: moviesPerCategory, isPending } = useQuery(
+		getOneMoviePerCategory({
+			dto: {
+				userId,
+				categoryIds,
+			},
+			enabled: !!userId,
+		}),
+	)
+
 	return (
 		<section className="space-y-4 px-4">
 			<h2 className="font-medium text-xl">À voir par catégories</h2>
 			<div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-				{categories.map((category, i) => (
-					<Link
-						href={`/a-voir?category=${category.id}`}
-						key={i}
-						className={twMerge(
-							"aspect-video rounded-md flex flex-col gap-2 justify-between py-2 px-3 shadow-lg",
-							"bg-linear-to-br from-transparent via-transparent bg-gray-900",
-							categoriesColor[category.id],
-						)}
-					>
-						<span className="font-medium">{category.name}</span>
-						<span className="text-4xl text-right">
-							{category.icon}
-						</span>
-					</Link>
-				))}
+				{/* @TODO: ajouter un skeleton & mapper sur moviesPerCategory*/}
+				{categories.map((category) => {
+					const movie = moviesPerCategory?.[category.id]
+					const hasMovie = !!movie && !!movie.poster
+
+					return (
+						<Link
+							href={`/a-voir?category=${category.id}`}
+							key={category.id}
+							className={twMerge(
+								"aspect-video rounded-md flex flex-col gap-2 justify-between py-2 px-3 shadow-lg relative overflow-hidden",
+								"bg-linear-to-br from-transparent via-transparent bg-gray-900",
+								categoriesColor[category.id],
+							)}
+						>
+							{hasMovie && (
+								<div className="absolute inset-0 opacity-50 blur-xs">
+									<Image
+										src={`https://image.tmdb.org/t/p/w342/${movie.poster}`}
+										alt={`${movie.title} poster`}
+										fill
+										className="object-cover object-center"
+										sizes="(max-width: 768px) 50vw, (max-width: 1280px) 25vw, 20vw"
+									/>
+								</div>
+							)}
+							<span className="font-medium relative z-10">
+								{category.name}
+							</span>
+							<span className="text-4xl text-right relative z-10">
+								{category.icon}
+							</span>
+						</Link>
+					)
+				})}
 			</div>
 		</section>
 	)
