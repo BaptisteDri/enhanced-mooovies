@@ -32,5 +32,5 @@ export const getInfiniteSeenMovies = ({ dto }: Options) => ({
 			offset: lastPage.movies.length > 0 ? lastPage.nextCursor : null,
 		}
 	},
-	placeholderData: keepPreviousData,
+	placeholderData: dto.categoryId && !dto.searchQuery ? undefined : keepPreviousData,
 })
