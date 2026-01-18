@@ -6,15 +6,14 @@ import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { MovieCard } from "@/design-system/movie-card"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
-import { useSearchFilters } from "@/ui/providers/search-filters-provider"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useEffect, useRef, useMemo } from "react"
+import { useEffect, useRef } from "react"
 
 type Props = { userId: string; searchQuery: string }
 
 export const SearchResults = ({ userId, searchQuery }: Props) => {
 	const { openDrawer } = useDrawer()
-	const { selectedCategory, sortBy } = useSearchFilters()
+
 
 	const handleOpenDrawer = (movie: DiscoverMovie) => {
 		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.id, userId, origin: "search" } })
@@ -22,7 +21,7 @@ export const SearchResults = ({ userId, searchQuery }: Props) => {
 
 	const observerRef = useRef<HTMLDivElement>(null)
 
-	// @TODO: handle filters
+
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
 		useInfiniteQuery<SearchMoviesResponse>({
 			...getInfiniteSearchMovies(searchQuery),

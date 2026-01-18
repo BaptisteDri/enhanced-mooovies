@@ -7,8 +7,10 @@ import { Drawer } from "vaul"
 import type { DrawerProps } from "@/ui/providers/drawer-render"
 import { useSearchFilters, type SortOption } from "@/ui/providers/search-filters-provider"
 
+export type MoviesType = "seen" | "not-seen" | "all"
+
 type Data = {
-	moviesType: "watched" | "all"
+	moviesType: MoviesType
 }
 
 export const SearchDrawer = ({
@@ -64,7 +66,7 @@ export const SearchDrawer = ({
 							<section>
 								<h2 className="mb-2 font-medium text-gray-200">Trier par</h2>
 								<div className="flex flex-wrap gap-2">
-									{moviesType === "watched" && (
+									{moviesType === "seen" && (
 										<FilterButton
 											icon="👀"
 											label="Date de visionnage"

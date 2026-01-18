@@ -5,6 +5,7 @@ import { Movie } from "@/core/movies/types/movie"
 import { MovieCard } from "@/design-system/movie-card"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
+import { MoviesType } from "@/ui/search/search-drawer"
 import { StickySearchBar } from "@/ui/shared/sticky-search-bar"
 import { InfiniteData } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef } from "react"
@@ -21,7 +22,7 @@ type Props = {
 	isPending: boolean
 	searchQuery: string
 	onSearchChange: (query: string) => void
-	moviesType: "watched" | "all"
+	moviesType: MoviesType
 }
 
 export const MoviesList = ({

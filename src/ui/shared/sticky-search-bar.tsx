@@ -4,11 +4,12 @@ import { Button } from "@/design-system/button"
 import { Icon } from "@/design-system/icons"
 import { Input } from "@/design-system/input"
 import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
+import { MoviesType } from "@/ui/search/search-drawer"
 
 type Props = {
 	onSearchChange: (query: string) => void
 	placeholder?: string
-	moviesType: "watched" | "all"
+	moviesType: MoviesType
 }
 
 export const StickySearchBar = ({
@@ -32,9 +33,13 @@ export const StickySearchBar = ({
 				iconPosition="left"
 				onChange={(e) => onSearchChange(e.target.value)}
 			/>
-			<Button intent="secondary" onClick={handleOpenDrawer} className="size-12 p-0">
-				<Icon name="adjustments-horizontal" size={20} />
-			</Button>
+			{
+				moviesType !== "all" && (
+					<Button intent="secondary" onClick={handleOpenDrawer} className="size-12 p-0">
+						<Icon name="adjustments-horizontal" size={20} />
+					</Button>
+				)
+			}
 		</div>
 	)
 }
