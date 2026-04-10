@@ -7,6 +7,7 @@ const Login: NextPage = () => {
 		<div>
 			<LoginForm />
 			<Link
+				prefetch
 				href={"/inscription"}
 				className="mt-4 flex gap-2 text-gray-400 text-sm hover:opacity-80 transition-all duration-150 justify-center"
 			>

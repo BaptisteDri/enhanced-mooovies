@@ -7,6 +7,7 @@ const Signup: NextPage = () => {
 		<div>
 			<SignupForm />
 			<Link
+				prefetch
 				href={"/connexion"}
 				className="mt-4 flex gap-2 text-gray-400 text-sm hover:opacity-80 transition-all duration-150 justify-center"
 			>

@@ -19,6 +19,7 @@ export const Menu = () => {
 			)}
 		>
 			<Link
+				prefetch
 				href="/"
 				className={twMerge(
 					"w-full h-full grid place-items-center",
@@ -32,6 +33,7 @@ export const Menu = () => {
 				/>
 			</Link>
 			<Link
+				prefetch
 				href="/recherche"
 				className={twMerge(
 					"w-full h-full grid place-items-center",
@@ -43,6 +45,7 @@ export const Menu = () => {
 				<Icon name="magnifying-glass" size={24} />
 			</Link>
 			<Link
+				prefetch
 				href="/profil"
 				className={twMerge(
 					"w-full h-full grid place-items-center",
