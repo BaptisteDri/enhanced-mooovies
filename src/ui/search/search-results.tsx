@@ -1,13 +1,14 @@
 "use client"
 
 import { SearchMoviesResponse } from "@/core/discover/infrastructure/discover-movies.api"
+import { mergeDiscoverPagesDedupedById } from "@/core/discover/merge-discover-pages"
 import { getInfiniteSearchMovies } from "@/core/discover/queries/get-infinite-search-movies"
 import { DiscoverMovie } from "@/core/discover/types/discover-movies"
 import { MovieCard } from "@/design-system/movie-card"
 import { MoviesListSkeleton } from "@/design-system/movies-list-skeleton"
 import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 
 type Props = { searchQuery: string }
 
@@ -31,6 +32,11 @@ export const SearchResults = ({ searchQuery }: Props) => {
 					pageParam: pageParam as any,
 				}),
 		})
+
+	const movies = useMemo(
+		() => mergeDiscoverPagesDedupedById(data?.pages),
+		[data?.pages],
+	)
 
 	useEffect(() => {
 		if (!hasNextPage || isFetchingNextPage) return
@@ -66,30 +72,23 @@ export const SearchResults = ({ searchQuery }: Props) => {
 				{isFetching &&
 					!isFetchingNextPage &&
 					!data?.pages?.[0]?.discoverMovies && <MoviesListSkeleton />}
-				{data?.pages
+				{movies
 					.filter(
-						(page): page is SearchMoviesResponse =>
-							page !== undefined,
+						(movie) =>
+							movie.poster_path !== null &&
+							movie.poster_path !== "",
 					)
-					.map((page) =>
-						page.discoverMovies
-							.filter(
-								(movie) =>
-									movie.poster_path !== null &&
-									movie.poster_path !== "",
-							)
-							.map((movie, i) => (
-								<MovieCard
-									movie={{ ...movie, type: "discover" }}
-									key={i}
-									sizes="33vw"
-									setSelectedMovie={(movie) => {
-										if (movie.type === "movie") return
-										handleOpenDrawer(movie)
-									}}
-								/>
-							)),
-					)}
+					.map((movie) => (
+						<MovieCard
+							movie={{ ...movie, type: "discover" }}
+							key={movie.id}
+							sizes="33vw"
+							setSelectedMovie={(movie) => {
+								if (movie.type === "movie") return
+								handleOpenDrawer(movie)
+							}}
+						/>
+					))}
 				{isFetchingNextPage && <MoviesListSkeleton />}
 			</section>
 			<div ref={observerRef} className="text-center text-gray-300">
