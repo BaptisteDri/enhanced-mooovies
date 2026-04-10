@@ -5,13 +5,13 @@ import { useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
-type Props = { movie: DiscoverMovie; userId: string }
+type Props = { movie: DiscoverMovie }
 
-export const SeenChip = ({ movie, userId }: Props) => {
+export const SeenChip = ({ movie }: Props) => {
 	const [lastSeenDate, setLastSeenDate] = useState<string>()
 
 	const { data: fetchedMovie } = useQuery(
-		getMovie({ tmdb_id: movie.id, userId, enabled: true, retry: false }),
+		getMovie({ tmdb_id: movie.id, enabled: true, retry: false }),
 	)
 
 	const isSeen = useMemo(() => {

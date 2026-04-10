@@ -5,21 +5,16 @@ import { SearchResults } from "@/ui/search/search-results"
 import { useSearchQuery } from "@/ui/shared/hooks/use-search-query"
 import { StickySearchBar } from "@/ui/shared/sticky-search-bar"
 
-type Props = { userId: string }
-
-export const SearchPage = ({ userId }: Props) => {
+export const SearchPage = () => {
 	const { setSearchQuery, debouncedSearchQuery } = useSearchQuery()
 
 	return (
 		<>
 			<StickySearchBar onSearchChange={setSearchQuery} moviesType="all" />
 			{debouncedSearchQuery ? (
-				<SearchResults
-					userId={userId}
-					searchQuery={debouncedSearchQuery}
-				/>
+				<SearchResults searchQuery={debouncedSearchQuery} />
 			) : (
-				<PopularMovies userId={userId} />
+				<PopularMovies />
 			)}
 		</>
 	)

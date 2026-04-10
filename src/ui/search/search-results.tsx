@@ -9,18 +9,19 @@ import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useEffect, useRef } from "react"
 
-type Props = { userId: string; searchQuery: string }
+type Props = { searchQuery: string }
 
-export const SearchResults = ({ userId, searchQuery }: Props) => {
+export const SearchResults = ({ searchQuery }: Props) => {
 	const { openDrawer } = useDrawer()
 
-
 	const handleOpenDrawer = (movie: DiscoverMovie) => {
-		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.id, userId, origin: "search" } })
+		openDrawer({
+			id: DRAWER_IDS.MOVIE,
+			data: { id: movie.id, origin: "search" },
+		})
 	}
 
 	const observerRef = useRef<HTMLDivElement>(null)
-
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
 		useInfiniteQuery<SearchMoviesResponse>({
@@ -100,7 +101,6 @@ export const SearchResults = ({ userId, searchQuery }: Props) => {
 					data?.pages?.[0]?.discoverMovies?.length === 0 &&
 					"Aucun résultat trouvé"}
 			</div>
-
 		</>
 	)
 }

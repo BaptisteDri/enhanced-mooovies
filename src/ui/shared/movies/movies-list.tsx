@@ -13,7 +13,6 @@ import { useEffect, useMemo, useRef } from "react"
 export const LIMIT = 15
 
 type Props = {
-	userId: string
 	title: string
 	data: InfiniteData<GetMoviesResponse> | undefined
 	fetchNextPage: () => void
@@ -26,7 +25,6 @@ type Props = {
 }
 
 export const MoviesList = ({
-	userId,
 	title,
 	data,
 	fetchNextPage,
@@ -42,7 +40,10 @@ export const MoviesList = ({
 	const { openDrawer } = useDrawer()
 
 	const handleOpenDrawer = (movie: Movie) => {
-		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.tmdb_id, userId, origin: "library" } })
+		openDrawer({
+			id: DRAWER_IDS.MOVIE,
+			data: { id: movie.tmdb_id, origin: "library" },
+		})
 	}
 
 	useEffect(() => {
@@ -78,7 +79,10 @@ export const MoviesList = ({
 
 	return (
 		<>
-			<StickySearchBar onSearchChange={onSearchChange} moviesType={moviesType} />
+			<StickySearchBar
+				onSearchChange={onSearchChange}
+				moviesType={moviesType}
+			/>
 			<h1 className="text-4xl font-semibold px-4">
 				{title}
 				{!!data?.pages[0].amount && (

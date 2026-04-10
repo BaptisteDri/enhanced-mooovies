@@ -8,17 +8,12 @@ import { useSearchFilters } from "@/ui/providers/search-filters-provider"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 
-type Props = {
-	userId: string
-}
-
-export const SeenList = ({ userId }: Props) => {
+export const SeenList = () => {
 	const { setSearchQuery, debouncedSearchQuery } = useSearchQuery()
 	const { sortBy, selectedCategory } = useSearchFilters()
 
 	const dto: GetMoviesDto = useMemo(
 		() => ({
-			userId,
 			seen: true,
 			limit: LIMIT,
 			offset: 0,
@@ -27,7 +22,7 @@ export const SeenList = ({ userId }: Props) => {
 			searchQuery: debouncedSearchQuery.trim() || undefined,
 			categoryId: selectedCategory || undefined,
 		}),
-		[userId, debouncedSearchQuery, sortBy, selectedCategory],
+		[debouncedSearchQuery, sortBy, selectedCategory],
 	)
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
@@ -35,7 +30,6 @@ export const SeenList = ({ userId }: Props) => {
 
 	return (
 		<MoviesList
-			userId={userId}
 			title="Vus"
 			data={data}
 			fetchNextPage={fetchNextPage}

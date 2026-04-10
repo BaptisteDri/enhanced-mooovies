@@ -1,4 +1,3 @@
-import { createClient } from "@/libs/supabase/server"
 import { PreviewedMovies } from "@/ui/home/previewed-movies"
 import { CategoriesListSection } from "@/ui/shared/movies/categories-list-section"
 import {
@@ -16,15 +15,10 @@ export const metadata: Metadata = {
 
 const Home: NextPage = async () => {
 	const queryClient = new QueryClient()
-	const supabase = createClient()
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-	const userId = session?.user?.id ?? ""
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<PreviewedMovies userId={userId} />
+			<PreviewedMovies />
 			<CategoriesListSection />
 		</HydrationBoundary>
 	)

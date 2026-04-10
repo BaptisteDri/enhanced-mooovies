@@ -1,6 +1,5 @@
 "use client"
 
-
 import { getTMDBMovie } from "@/core/discover/queries/get-discover-movie"
 import { getMovie } from "@/core/movies/queries/get-movie"
 import { DrawerActions } from "@/design-system/movie-drawer/drawer-actions"
@@ -12,20 +11,14 @@ import { useQuery } from "@tanstack/react-query"
 import { Drawer } from "vaul"
 import type { DrawerProps } from "@/ui/providers/drawer-render"
 
-type DrawerData = {
+type DrawerData = {
 	id: number
-	userId: string
 	origin: "library" | "search"
 }
 
-export const MovieDrawer = ({
-	closeDrawer,
-	data,
-	isOpen,
-}: DrawerProps) => {
-	const { id, userId, origin } = data as DrawerData
+export const MovieDrawer = ({ closeDrawer, data, isOpen }: DrawerProps) => {
+	const { id, origin } = data as DrawerData
 
-	
 	const { data: movie, isFetching: isTMDBMovieFetching } = useQuery(
 		getTMDBMovie({ id, enabled: isOpen }),
 	)
@@ -33,7 +26,6 @@ export const MovieDrawer = ({
 	const { data: libraryMovie, isFetching: isLibraryMovieFetching } = useQuery(
 		getMovie({
 			tmdb_id: movie?.id as number,
-			userId,
 			enabled: !!movie?.id,
 			retry: false,
 		}),
@@ -74,19 +66,13 @@ export const MovieDrawer = ({
 											year={year}
 										/>
 
-										<DrawerCategories
-											movie={movie}
-											userId={userId}
-										/>
+										<DrawerCategories movie={movie} />
 
 										<p className="mb-2 line-clamp-4 text-gray-400 text-sm">
 											{movie.overview}
 										</p>
 
-										<DrawerActions
-											movie={movie}
-											userId={userId}
-										/>
+										<DrawerActions movie={movie} />
 									</>
 								)}
 							</div>

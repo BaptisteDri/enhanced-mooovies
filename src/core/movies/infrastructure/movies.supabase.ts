@@ -4,7 +4,6 @@ import { createClient } from "@/libs/supabase/client"
 const supabase = createClient()
 
 export type GetMoviesDto = {
-	userId: string
 	limit?: number
 	offset?: number | null
 	seen?: boolean
@@ -26,10 +25,9 @@ export type ToggleMovieIsSeenDto = {
 
 export type GetMovieDto = {
 	tmdb_id: number
-	userId: string
 }
 
-export type AddMovieDto = Omit<Movie, "uuid" | "added_date">
+export type AddMovieDto = Omit<Movie, "uuid" | "added_date" | "user_id">
 
 export const movies: {
 	get: (dto: GetMoviesDto) => Promise<GetMoviesResponse | undefined>
@@ -41,21 +39,21 @@ export const movies: {
 	addMovie: (movie: AddMovieDto) => Promise<void>
 	deleteMovie: (uuid: string) => Promise<void>
 } = {
-	get: async ({
-		userId,
-		limit = 0,
-		seen,
-		offset = 0,
-		orderBy = "added_date",
-		ascending = false,
-		searchQuery,
-		categoryId,
-	}) => {
+	get: async (dto: GetMoviesDto) => {
+		const {
+			limit = 0,
+			seen,
+			offset = 0,
+			orderBy = "added_date",
+			ascending = false,
+			searchQuery,
+			categoryId,
+		} = dto
+
 		try {
 			const query = supabase
 				.from("films")
 				.select("*", { count: "exact" })
-				.eq("user_id", userId)
 				.order(orderBy, { ascending })
 
 			if (seen) {
@@ -96,12 +94,11 @@ export const movies: {
 			console.error(error)
 		}
 	},
-	getMovie: async ({ tmdb_id, userId }) => {
+	getMovie: async ({ tmdb_id }: GetMovieDto) => {
 		const { data, error } = await supabase
 			.from("films")
 			.select("*")
 			.eq("tmdb_id", tmdb_id)
-			.eq("user_id", userId)
 			.maybeSingle()
 
 		if (error) throw error
@@ -121,7 +118,17 @@ export const movies: {
 		}
 	},
 	addMovie: async (movie) => {
-		await supabase.from("films").insert({ ...movie, uuid: undefined })
+		const {
+			data: { user },
+			error: authError,
+		} = await supabase.auth.getUser()
+		if (authError || !user) throw authError ?? new Error("Non authentifié")
+
+		await supabase.from("films").insert({
+			...movie,
+			user_id: user.id,
+			uuid: undefined,
+		})
 	},
 
 	deleteMovie: async (uuid) => {

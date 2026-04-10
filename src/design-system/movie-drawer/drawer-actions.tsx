@@ -11,10 +11,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 type Props = {
 	movie: DiscoverMovie
-	userId: string
 }
 
-export const DrawerActions = ({ movie, userId }: Props) => {
+export const DrawerActions = ({ movie }: Props) => {
 	const queryClient = useQueryClient()
 
 	const {
@@ -24,7 +23,6 @@ export const DrawerActions = ({ movie, userId }: Props) => {
 	} = useQuery(
 		getMovie({
 			tmdb_id: movie.id,
-			userId,
 			enabled: true,
 			retry: false,
 		}),
@@ -73,7 +71,6 @@ export const DrawerActions = ({ movie, userId }: Props) => {
 			poster: movie.poster_path,
 			title: movie.title,
 			tmdb_id: movie.id,
-			user_id: userId,
 			watched_date: isSeen ? new Date().toISOString() : null,
 			year: new Date(movie.release_date).getFullYear().toString(),
 			runtime: "",

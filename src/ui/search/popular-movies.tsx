@@ -9,13 +9,14 @@ import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useEffect, useRef } from "react"
 
-type Props = { userId: string }
-
-export const PopularMovies = ({ userId }: Props) => {
+export const PopularMovies = () => {
 	const { openDrawer } = useDrawer()
 
 	const handleOpenDrawer = (movie: DiscoverMovie) => {
-		openDrawer({ id: DRAWER_IDS.MOVIE, data: { id: movie.id, userId, origin: "search" } })
+		openDrawer({
+			id: DRAWER_IDS.MOVIE,
+			data: { id: movie.id, origin: "search" },
+		})
 	}
 
 	const observerRef = useRef<HTMLDivElement>(null)

@@ -7,17 +7,13 @@ import { DRAWER_IDS, useDrawer } from "@/ui/providers/drawer-provider"
 import { MoviesListPreviewSection } from "@/ui/shared/movies/movies-list-preview-section"
 import { useQuery } from "@tanstack/react-query"
 
-type Props = {
-	userId: string
-}
-
-export const PreviewedMovies = ({ userId }: Props) => {
+export const PreviewedMovies = () => {
 	const { openDrawer } = useDrawer()
 
 	const handleOpenDrawer = (movie: Movie) => {
 		openDrawer({
 			id: DRAWER_IDS.MOVIE,
-			data: { id: movie.tmdb_id, userId, origin: "library" },
+			data: { id: movie.tmdb_id, origin: "library" },
 		})
 	}
 
@@ -25,7 +21,6 @@ export const PreviewedMovies = ({ userId }: Props) => {
 		getSeenMovies({
 			dto: {
 				limit: 10,
-				userId,
 				orderBy: "watched_date",
 			},
 			enabled: true,
@@ -36,9 +31,7 @@ export const PreviewedMovies = ({ userId }: Props) => {
 	}
 
 	const { data: notSeenMoviesData, isFetching: isNotSeenMoviesFetching } =
-		useQuery(
-			getNotSeenMovies({ dto: { limit: 10, userId }, enabled: true }),
-		)
+		useQuery(getNotSeenMovies({ dto: { limit: 10 }, enabled: true }))
 	const { amount: notSeenMoviesAmount, movies: notSeenMovies } = {
 		...notSeenMoviesData,
 	}
