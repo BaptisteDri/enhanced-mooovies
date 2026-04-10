@@ -1,6 +1,6 @@
 import { Menu } from "@/design-system/menu"
 
-export default async function AppLayout({
+export default function AppLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode

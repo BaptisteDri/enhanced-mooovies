@@ -1,7 +1,7 @@
 import { AuthLayout } from "@/ui/shared/auth/auth-layout"
 import { LayoutMainContent } from "@/ui/shared/auth/layout-main-content"
 
-export default async function RootLayout({
+export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
