@@ -65,5 +65,14 @@ export async function updateSession(request: NextRequest) {
 		return NextResponse.redirect(new URL("/connexion", request.url))
 	}
 
+	if (
+		(request.nextUrl.pathname === "/connexion" ||
+			request.nextUrl.pathname === "/inscription") &&
+		!user.error &&
+		user.data.user
+	) {
+		return NextResponse.redirect(new URL("/", request.url))
+	}
+
 	return response
 }

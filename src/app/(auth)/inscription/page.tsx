@@ -1,15 +1,8 @@
-import { createClient } from "@/libs/supabase/server"
 import { SignupForm } from "@/ui/signup/signup-form"
 import { NextPage } from "next"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 
-const Login: NextPage = async () => {
-	const supabase = createClient()
-	const { data } = await supabase.auth.getUser()
-
-	if (data.user) redirect("/")
-
+const Signup: NextPage = () => {
 	return (
 		<div>
 			<SignupForm />
@@ -24,4 +17,4 @@ const Login: NextPage = async () => {
 	)
 }
 
-export default Login
+export default Signup

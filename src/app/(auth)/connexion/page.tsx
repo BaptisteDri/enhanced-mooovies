@@ -1,15 +1,8 @@
-import { createClient } from "@/libs/supabase/server"
 import { LoginForm } from "@/ui/login/login-form"
 import { NextPage } from "next"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 
-const Login: NextPage = async () => {
-	const supabase = createClient()
-	const { data } = await supabase.auth.getUser()
-
-	if (data.user) redirect("/")
-
+const Login: NextPage = () => {
 	return (
 		<div>
 			<LoginForm />
