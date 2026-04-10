@@ -17,11 +17,14 @@ export const metadata: Metadata = {
 const Home: NextPage = async () => {
 	const queryClient = new QueryClient()
 	const supabase = createClient()
-	const { data } = await supabase.auth.getUser()
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+	const userId = session?.user?.id ?? ""
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<PreviewedMovies userId={data.user?.id || ""} />
+			<PreviewedMovies userId={userId} />
 			<CategoriesListSection />
 		</HydrationBoundary>
 	)
