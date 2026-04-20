@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import ReactQueryProvider from "@/ui/providers/react-query-provider"
@@ -17,10 +18,12 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<ReactQueryProvider>
 					<DrawerProvider>
-						<SearchFiltersProvider>
-							{children}
-							<DrawerRender />
-						</SearchFiltersProvider>
+						<Suspense fallback={null}>
+							<SearchFiltersProvider>
+								{children}
+								<DrawerRender />
+							</SearchFiltersProvider>
+						</Suspense>
 					</DrawerProvider>
 				</ReactQueryProvider>
 			</body>
